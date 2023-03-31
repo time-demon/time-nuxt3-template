@@ -1,3 +1,4 @@
+// 后台管理员
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
 export const adminInfor = defineStore("adminInfor", {
@@ -17,7 +18,7 @@ export const adminInfor = defineStore("adminInfor", {
         center: true,
         duration: 1000,
       });
-      useRouter().push("/admin");
+      useRouter().push({ name: "admin" });
     },
     // 退出登录
     logOut() {
@@ -33,5 +34,6 @@ export const adminInfor = defineStore("adminInfor", {
       useRouter().push({ name: "admin-login" });
     },
   },
+  // 持久化
   persist: true,
 });

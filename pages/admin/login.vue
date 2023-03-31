@@ -60,7 +60,7 @@
                 <div class="">忘记密码？</div>
                 <el-button
                   :loading="loginButton.loading"
-                  @click="loginGo(loginFormRef)"
+                  @click="loginIn(loginFormRef)"
                 >
                   {{ loginButton.loading ? "登录中..." : "登录" }}
                 </el-button>
@@ -106,10 +106,10 @@ onMounted(() => {
 });
 
 // 是否同意服务条款
-const agreeState = ref<Boolean>(false);
+const agreeState = ref<boolean>(false);
 
 // 登录表单
-const loginFormRef = ref<FormInstance>(null);
+const loginFormRef = ref<FormInstance>();
 const loginForm = reactive<any>({
   account: "",
   password: "",
@@ -125,7 +125,7 @@ const loginButton = reactive<any>({
   state: true,
 });
 // 登录！
-const loginGo = async (formEl: FormInstance | undefined) => {
+const loginIn = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid: any, fields: any) => {
     if (valid) {
@@ -156,6 +156,7 @@ const loginGo = async (formEl: FormInstance | undefined) => {
               ElMessage({
                 message: r.msg,
                 type: "error",
+                duration: 1000,
               });
             }, 300);
             return;

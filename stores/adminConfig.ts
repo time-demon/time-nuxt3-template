@@ -1,3 +1,4 @@
+// 后台相关配置
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
 

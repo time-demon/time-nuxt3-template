@@ -1,3 +1,4 @@
+// 后台路由屑
 import { defineStore } from "pinia";
 import { adminConfig } from "~/stores/adminConfig";
 
