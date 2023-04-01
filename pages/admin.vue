@@ -44,6 +44,13 @@ const pageLoadingConfig = reactive<any>({
 
 // 获取后台配置
 const getConfig = async () => {
+  // 对接接口时请删除这个！
+  if (true) {
+    pageLoadingConfig.loading = false;
+    adminConfig().adminConfigSet({ title: "time-nuxt3-template" });
+    return;
+  }
+
   axios({
     url: "/api/admin/config",
     data: {

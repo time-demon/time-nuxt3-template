@@ -85,6 +85,7 @@ import { FormInstance, FormRules } from "element-plus";
 import { adminConfig } from "~/stores/adminConfig";
 import { adminInfor } from "~/stores/adminInfor";
 import axios from "~/server/axios";
+import { PROPERTY_TYPES } from "@babel/types";
 const store = reactive<any>(adminConfig());
 
 // 输出文字
@@ -142,7 +143,17 @@ const loginIn = async (formEl: FormInstance | undefined) => {
         loginForm[i] = loginForm[i].trim();
       }
 
-      // 开始登录 接口自定义
+      // 对接接口时请删除这个！
+      if (true) {
+        setTimeout(() => {
+          // 登录并存储管理员信息
+          adminInfor().loginIn({ name: "时光" });
+          loginButton.loading = false;
+        }, 300);
+        return;
+      }
+
+      // 开始登录 接口自定义，文件在 server/api/admin/login.ts
       axios({
         url: "/api/admin/login",
         data: loginForm,
