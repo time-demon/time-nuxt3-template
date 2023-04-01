@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: any) => {
   let returnData = {} as any;
   await db_query({ query: { account: query.account }, table: "admin" })
     .then(async (r: any) => {
-      if (!r.length) {
+      if (!r.data.length) {
         returnData = { code: -1, msg: "账号不存在" };
         return;
       }
@@ -24,12 +24,12 @@ export default defineEventHandler(async (event: any) => {
         table: "admin",
       })
         .then((r2: any) => {
-          if (!r2.length) {
+          if (!r2.data.length) {
             returnData = { code: -1, msg: "密码错误" };
             return;
           }
           returnData.code = 200;
-          returnData.data = r2;
+          returnData.data = r2.data;
         })
         .catch((err2: any) => {
           returnData.code = -1;
