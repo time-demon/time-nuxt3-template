@@ -1,6 +1,8 @@
 // 后台管理员
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
+import { adminNavbar } from "~/stores/adminNavbar";
+
 export const adminInfor = defineStore("adminInfor", {
   state: () => {
     return {
@@ -23,6 +25,7 @@ export const adminInfor = defineStore("adminInfor", {
     // 退出登录
     logOut() {
       adminInfor().$reset();
+      adminNavbar().$reset();
       localStorage.clear();
       sessionStorage.clear();
       ElMessage({
