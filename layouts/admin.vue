@@ -596,7 +596,7 @@ const logOut = async () => {
       border-bottom: 1px solid #eeeeee;
     }
     > .mainBox {
-      height: calc(100vh - 50px);
+      height: calc(100vh - 50px - 36px);
       overflow: auto;
     }
   }

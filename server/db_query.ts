@@ -19,7 +19,17 @@ function db_query(config = {} as any) {
             page: 1, // 当前页
             size: 10, // 每页条数
           } as any;
+          if (config.query.page) {
+            pageConfig.page = parseInt(config.query.page);
+          }
+          if (config.query.size) {
+            pageConfig.size = parseInt(config.query.size);
+          }
 
+          // 清理一下分页才需要的key
+          for (let i in pageConfig) {
+            delete config.query[i];
+          }
           // 先获取总数
           conn
             .db()
@@ -28,27 +38,11 @@ function db_query(config = {} as any) {
             .toArray()
             .then((res: any) => {
               pageConfig.total = res.length;
-              if (config.query.page) {
-                pageConfig.page = config.query.page;
-              }
-              if (config.query.size) {
-                pageConfig.size = parseInt(config.query.size);
-              }
               pageConfig.pages =
                 parseInt(
                   parseInt(res.length) / parseInt(pageConfig.size) + ""
                 ) +
                 (parseInt(res.length) % parseInt(pageConfig.size) > 0 ? 1 : 0);
-              // 清理一下分页才需要的key
-              for (let i in pageConfig) {
-                delete config.query[i];
-              }
-              console.log({
-                page: pageConfig.page,
-                szie: pageConfig.size,
-                com: pageConfig.page * pageConfig.size,
-              });
-              //1 0 ,2: 3 ,3:6
               dbTable = conn
                 .db()
                 .collection(config.table)
