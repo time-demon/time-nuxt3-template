@@ -35,7 +35,4 @@ export default defineNuxtConfig({
     /** Options */
     icon: "ElIcon",
   },
-  image: {
-    // Options
-  },
 });

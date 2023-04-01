@@ -16,16 +16,16 @@ function query(data = {} as any) {
             resolve(res);
           })
           .catch((err: any) => {
-            console.log("数据操作失败" + err.message);
+            // 数据操作失败
             reject();
           })
           .finally(() => {
-            console.log("取消");
+            // 取消
             conn.close();
           });
       })
       .catch((err: any) => {
-        console.log("数据库连接失败");
+        // 数据库连接失败
         reject();
       });
   });

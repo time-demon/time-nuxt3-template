@@ -18,7 +18,7 @@ const lc_config = {
   // 端口，一般27017默认即可
   port: "27017",
   // 数据库名称
-  dbname: "time_souti_new",
+  dbname: "",
   // 用户名
   name: "",
   // 密码

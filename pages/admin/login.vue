@@ -148,30 +148,33 @@ const loginIn = async (formEl: FormInstance | undefined) => {
         data: loginForm,
       })
         .then((r: any) => {
-          console.log("r", r);
-
-          if (r.code === -1) {
+          if (r.code === 200) {
             setTimeout(() => {
+              // 登录并存储管理员信息
+              adminInfor().loginIn(r.data[0]);
               loginButton.loading = false;
-              ElMessage({
-                message: r.msg,
-                type: "error",
-                duration: 1000,
-              });
             }, 300);
             return;
           }
           setTimeout(() => {
-            // 登录并存储管理员信息
-            adminInfor().loginIn(r.data[0]);
             loginButton.loading = false;
+            ElMessage({
+              message: r.msg,
+              type: "error",
+              duration: 1000,
+            });
           }, 300);
         })
         .catch((err: any) => {
-          console.log("err", err);
+          loginButton.loading = false;
+          ElMessage({
+            message: "异常",
+            type: "error",
+            duration: 1000,
+          });
         });
     } else {
-      console.log("error submit!", fields);
+      // 不合表单规则
     }
   });
 };

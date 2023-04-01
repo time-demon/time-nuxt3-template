@@ -67,11 +67,11 @@ const getConfig = async () => {
         closeOnPressEscape: false,
       })
         .then(() => {
-          console.log("重试");
+          // 重试
           getConfig();
         })
         .catch((e) => {
-          console.log("取消");
+          // 取消
         });
     });
 };

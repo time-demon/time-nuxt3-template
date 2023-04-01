@@ -49,9 +49,6 @@ const iconGet = () => {
   axios({
     url: iconConfig.url,
   }).then((r: any) => {
-    console.log(666, r);
-    console.log(iconConfig.url);
-
     iconArray.length = 0;
     const iconArrayData = [] as any;
     for (let i in r.split("\n\n")) {
@@ -71,7 +68,6 @@ const iconGet = () => {
 onMounted(() => {
   iconGet();
 });
-console.log(554);
 
 const getIconIndex = ref<number>(0);
 // 图标渲染

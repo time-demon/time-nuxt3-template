@@ -1,4 +1,4 @@
-import query from "~/server/query";
+import query from "~~/server/db_query";　
 export default defineEventHandler(async (event: any) => {
   const returnData = {} as any;
   await query()
