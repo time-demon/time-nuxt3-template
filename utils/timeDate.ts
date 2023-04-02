@@ -5,7 +5,16 @@ export default function (type: string, time: number | string) {
   let date = "" as Object;
   if (type == "parse") {
     if (!time) return null;
-    time = typeof time === "string" ? parseInt(time) : time;
+    if (typeof time === "string") {
+      time =
+        time
+          .split("")
+          .map((item: any) => !parseInt(item))
+          .indexOf(true) === -1
+          ? parseInt(time)
+          : time;
+    }
+
     // 解析时间戳
     date = {
       time: new Date(time).getTime(), // 时间戳

@@ -1,3 +1,4 @@
+<!-- 搜题记录 -->
 <template>
   <Title> {{ $route.meta.title }}</Title>
   <div class="tabelQueryBox">
@@ -25,8 +26,8 @@
           style="width: 140px"
           v-model="tabelQuery.inputQuery.content"
           :placeholder="`请输入${tabelQuery.typeList.find(
-            (item:any) => item.value === tabelQuery.inputQuery.type
-          ).label}...`"
+              (item:any) => item.value === tabelQuery.inputQuery.type
+            ).label}...`"
           clearable
         />
       </el-form-item>
@@ -47,16 +48,18 @@
   >
     <el-table-column type="selection" width="40" align="center" />
     <el-table-column
-      fixed
       prop="name"
       label="用户名"
       width="100"
       show-overflow-tooltip
     />
-    <el-table-column prop="count" label="剩余积分" width="100" align="center">
-      <template #default="scope">
-        {{ scope.row.count }}
-      </template>
+    <el-table-column
+      prop="title"
+      label="题目"
+      width="300"
+      align="center"
+      show-overflow-tooltip
+    >
     </el-table-column>
     <el-table-column
       prop="openid"
@@ -65,20 +68,9 @@
       width="260"
       show-overflow-tooltip
     />
-    <el-table-column
-      prop="session_key"
-      label="SessionKey"
-      align="center"
-      width="260"
-      show-overflow-tooltip
-    >
-      <template #default="scope">
-        {{ scope.row.session_key ? scope.row.session_key : "暂无" }}
-      </template>
-    </el-table-column>
     <el-table-column prop="time" label="添加时间" width="160" align="center">
       <template #default="scope">
-        {{scope.row.time  }}
+        {{ parseFloat(scope.row.time) }}
         {{
           timeDate("parse", scope.row.time)
             ? timeDate("parse", scope.row.time).fullDateTime
@@ -111,7 +103,7 @@
 import axios from "~/server/axios";
 definePageMeta({
   order: 1,
-  title: "用户列表",
+  title: "搜题记录",
   icon: "sg sg-yonghuliebiao",
 });
 
@@ -153,7 +145,7 @@ const getData = (query = {} as any) => {
   tableData.loading = true;
   query = Object.assign(query, tableData.paging);
   axios({
-    url: "/api/admin/usersGet",
+    url: "/api/admin/titlesGet",
     data: query,
   })
     .then((r: any) => {
