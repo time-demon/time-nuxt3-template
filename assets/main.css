@@ -47,6 +47,10 @@ a {
   opacity: 1 !important;
 }
 
+.tabelQueryBox {
+  margin: 0 0 10px 0;
+}
+
 .flexCenter {
   display: flex;
   vertical-align: top;

@@ -1,15 +1,43 @@
 <template>
   <Title> {{ $route.meta.title }}</Title>
-  <el-pagination
-    style="float: right; margin: 0 0 10px"
-    v-model:current-page="tableData.paging.page"
-    v-model:page-size="tableData.paging.size"
-    :page-sizes="[20, 40, 80, 160]"
-    layout="sizes, prev, pager, next"
-    :total="tableData.paging.total"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-  />
+  <div class="tabelQueryBox">
+    <el-form
+      :inline="true"
+      :model="tabelQuery.inputQuery"
+      class="demo-form-inline"
+    >
+      <el-form-item>
+        <el-select
+          style="width: 100px"
+          v-model="tabelQuery.inputQuery.type"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in tabelQuery.typeList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-input
+          style="width: 140px"
+          v-model="tabelQuery.inputQuery.content"
+          :placeholder="`请输入${tabelQuery.typeList.find(
+            (item:any) => item.value === tabelQuery.inputQuery.type
+          ).label}...`"
+          clearable
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="tabelqueryGo">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="info" text @click="tabelqueryReset">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
   <el-table
     v-loading="tableData.loading"
     :data="tableData.list"
@@ -86,13 +114,40 @@ definePageMeta({
   icon: "sg sg-yonghuliebiao",
 });
 
+// 表格条件查询
+const tabelQuery = reactive<any>({
+  typeList: [
+    {
+      value: "name",
+      label: "用户名",
+    },
+  ],
+  inputQuery: {
+    type: "name",
+    content: "",
+    reset: () => {
+      tabelQuery.inputQuery.type = "name";
+      tabelQuery.inputQuery.content = "";
+    },
+  },
+});
+// 开始查询
+const tabelqueryGo = () => {
+  getData({ [tabelQuery.inputQuery.type]: tabelQuery.inputQuery.content });
+};
+// 重置
+const tabelqueryReset = () => {
+  tabelQuery.inputQuery.reset();
+  getData({ size: 20 });
+};
+
 // 表格数据配置
 const tableData = reactive<any>({
   loading: true,
   list: [],
   paging: {}, // 分页
 });
-// 获取数据
+// 获取表格数据
 const getData = (query = {} as any) => {
   tableData.loading = true;
   query = Object.assign(query, tableData.paging);
@@ -128,14 +183,22 @@ const getData = (query = {} as any) => {
     });
 };
 getData({ size: 20 });
+// 更改每天条数
 const handleSizeChange = (val: number) => {
   tableData.size = val;
   getData();
 };
+// 更改页数
 const handleCurrentChange = (val: number) => {
   tableData.page = val;
   getData();
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.tabelQueryBox {
+  :deep(.el-form--inline .el-form-item) {
+    margin-right: 10px;
+  }
+}
+</style>
