@@ -150,7 +150,11 @@ const tabelQuery = reactive<any>({
 });
 // 开始查询
 const tabelqueryGo = () => {
-  getData({ [tabelQuery.inputQuery.type]: tabelQuery.inputQuery.content });
+  getData(
+    tabelQuery.inputQuery.content
+      ? { [tabelQuery.inputQuery.type]: tabelQuery.inputQuery.content }
+      : {}
+  );
 };
 // 重置
 const tabelqueryReset = () => {

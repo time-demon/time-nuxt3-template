@@ -123,7 +123,11 @@ const tabelQuery = reactive<any>({
 });
 // 开始查询
 const tabelqueryGo = () => {
-  getData({ [tabelQuery.inputQuery.type]: tabelQuery.inputQuery.content });
+  getData(
+    tabelQuery.inputQuery.content
+      ? { [tabelQuery.inputQuery.type]: tabelQuery.inputQuery.content }
+      : {}
+  );
 };
 // 重置
 const tabelqueryReset = () => {
@@ -151,7 +155,6 @@ const getData = (query = {} as any) => {
   })
     .then((r_users: any) => {
       if (r_users.code === 200) {
-        query.paging = 1;
         // 再获取搜题记录
         useAxios({
           url: "/api/admin/titlesGet",

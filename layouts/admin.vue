@@ -155,35 +155,11 @@
           </li>
         </ul>
       </div>
-      <ul class="navbarBox">
-        <li
-          class="navbar"
-          :class="[$route.name === home_routes.name ? 'this_navbar' : '']"
-          @click="goPath(home_routes)"
-        >
-          <span class="title"> {{ home_routes.meta.title }}{{}} </span>
-        </li>
-        <template
-          v-for="item in store_adminNavbar.adminNavbar"
-          :key="item.name"
-        >
-          <li
-            v-if="store_adminNavbar.adminNavbar.length"
-            class="navbar"
-            :class="[$route.name === item.name ? 'this_navbar' : '']"
-            @click.stop="goPath(item)"
-          >
-            <span class="title">
-              {{ item.meta.title }}
-            </span>
-            <span class="close" @click.stop="navbarClose(item)">
-              <i class="sg sg-guanbi_close"></i>
-            </span>
-          </li>
-        </template>
-      </ul>
-      <div class="mainBox" v-loading="false">
-        <slot v-if="true" />
+      <!-- 路由屑 -->
+      <RoutingChip />
+      <!-- 路由屑 -->
+      <div class="mainBox">
+        <slot name="main" />
       </div>
     </div>
   </div>
@@ -203,57 +179,8 @@ import { adminNavbar } from "~/stores/adminNavbar";
 import { adminInfor } from "~/stores/adminInfor";
 import { adminConfig } from "~/stores/adminConfig";
 const store = reactive<any>(adminConfig());
-const store_adminNavbar = reactive<any>(adminNavbar());
 const store_adminInfor = reactive<any>(adminInfor());
 const router = useRouter() as any;
-const routes = reactive<any>(
-  useRouter().options.routes.find((item: any) => item.name === "admin")
-);
-
-const home_routes = reactive<any>(
-  routes?.children.find((item: any) => item.name === "admin-home")
-);
-
-// 路由屑关闭
-const navbarClose = (data: any) => {
-  // 如果后面有路由
-  if (
-    adminNavbar().adminNavbar[
-      adminNavbar().adminNavbar.findIndex(
-        (item: any) => item.name === data.name
-      ) + 1
-    ]
-  ) {
-    useRouter().push({
-      name: adminNavbar().adminNavbar[
-        adminNavbar().adminNavbar.findIndex(
-          (item: any) => item.name === data.name
-        ) + 1
-      ].name,
-    });
-  } else {
-    // 如果后面没有路由但前面有路由
-    if (
-      adminNavbar().adminNavbar[
-        adminNavbar().adminNavbar.findIndex(
-          (item: any) => item.name === data.name
-        ) - 1
-      ]
-    ) {
-      useRouter().push({
-        name: adminNavbar().adminNavbar[
-          adminNavbar().adminNavbar.findIndex(
-            (item: any) => item.name === data.name
-          ) - 1
-        ].name,
-      });
-    } else {
-      // 如果后面没有路由且前面没有路由
-      useRouter().push({ name: "admin-home" });
-    }
-  }
-  adminNavbar().adminNavbarDel(data);
-};
 
 // 侧边导航
 const sidebarConfig = reactive<any>({

@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "stylesheet",
-          href: "//at.alicdn.com/t/c/font_3778480_90ejg2xc4ur.css",
+          href: "//at.alicdn.com/t/c/font_3778480_5z78tg3p77f.css",
         },
       ],
       noscript: [{ children: "JavaScript is required" }],

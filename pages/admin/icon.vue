@@ -24,7 +24,7 @@ definePageMeta({
 
 // 图标配置
 const iconConfig = reactive({
-  url: "//at.alicdn.com/t/c/font_3778480_90ejg2xc4ur.css",
+  url: "//at.alicdn.com/t/c/font_3778480_5z78tg3p77f.css",
   qianzhui: "sg",
   state: true,
 });

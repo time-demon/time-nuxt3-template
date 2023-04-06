@@ -12,14 +12,16 @@
     <template v-else>
       <NuxtLayout name="admin">
         <!-- <NuxtPage /> -->
-        <router-view
-          v-slot="{ Component, route }"
-          v-if="adminConfig().pageState"
-        >
-          <keep-alive>
-            <component :is="Component" :key="route.fullPath" />
-          </keep-alive>
-        </router-view>
+        <template #main>
+          <router-view
+            v-slot="{ Component, route }"
+            v-if="adminConfig().pageState"
+          >
+            <keep-alive>
+              <component :is="Component" :key="route.fullPath" />
+            </keep-alive>
+          </router-view>
+        </template>
       </NuxtLayout>
     </template>
   </div>

@@ -25,7 +25,12 @@ export const adminNavbar = defineStore("adminNavbar", {
       this.adminNavbar.push(data);
       adminConfig().pageRefresh();
     },
-    adminNavbarDel(data = {} as any) {
+    adminNavbarDel(data = {} as any, type: any) {
+      if (type === "all") {
+        this.adminNavbar = [];
+        return;
+      }
+
       this.adminNavbar.splice(
         this.adminNavbar.findIndex((item: any) => item.name === data.name),
         1
