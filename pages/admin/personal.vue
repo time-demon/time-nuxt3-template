@@ -1,3 +1,4 @@
+<!-- 个人中心 -->
 <template>
   <div class="personalBox">
     <div class="personal box">
@@ -8,10 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import axios from "~~/server/axios";
 import { adminInfor } from "~/stores/adminInfor";
 const store_adminInfor = reactive<any>(adminInfor());
- 
+
 definePageMeta({
   order: 999999,
   title: "个人中心",

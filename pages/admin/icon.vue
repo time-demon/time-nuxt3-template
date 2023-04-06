@@ -16,8 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from "~/server/axios";
-
 definePageMeta({
   order: 1,
   title: "图标Icon",
@@ -26,7 +24,7 @@ definePageMeta({
 
 // 图标配置
 const iconConfig = reactive({
-  url: "//at.alicdn.com/t/c/font_3778480_3karu7hv8bz.css",
+  url: "//at.alicdn.com/t/c/font_3778480_90ejg2xc4ur.css",
   qianzhui: "sg",
   state: true,
 });
@@ -46,7 +44,7 @@ const copyIcon = (text: string) => {
 // 图标数据
 const iconArray = reactive<any>([]);
 const iconGet = () => {
-  axios({
+  useAxios({
     url: iconConfig.url,
   }).then((r: any) => {
     iconArray.length = 0;

@@ -1,5 +1,6 @@
 import { adminInfor } from "~/stores/adminInfor";
 export default defineNuxtRouteMiddleware((to: any, from: any) => {
+ 
   // 如果是后台
   if (to.href.split("/")[1] === "admin") {
     if (to.path === "/admin") {

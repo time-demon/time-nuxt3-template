@@ -1,3 +1,4 @@
+<!-- 搜题记录 -->
 <template>
   <Title> {{ $route.meta.title }}</Title>
   <div class="tabelQueryBox">
@@ -25,8 +26,8 @@
           style="width: 140px"
           v-model="tabelQuery.inputQuery.content"
           :placeholder="`请输入${tabelQuery.typeList.find(
-            (item:any) => item.value === tabelQuery.inputQuery.type
-          ).label}...`"
+              (item:any) => item.value === tabelQuery.inputQuery.type
+            ).label}...`"
           clearable
         />
       </el-form-item>
@@ -47,33 +48,20 @@
   >
     <el-table-column fixed type="selection" width="40" align="center" />
     <el-table-column
-      prop="name"
-      label="用户名"
-      width="100"
-      show-overflow-tooltip
-    />
-    <el-table-column prop="count" label="剩余积分" width="100" align="center">
-      <template #default="scope">
-        {{ scope.row.count }}
-      </template>
-    </el-table-column>
-    <el-table-column
       prop="openid"
-      label="OpenID"
+      label="用户"
       align="center"
-      width="260"
-      show-overflow-tooltip
-    />
-    <el-table-column
-      prop="session_key"
-      label="SessionKey"
-      align="center"
-      width="260"
+      width="120"
       show-overflow-tooltip
     >
-      <template #default="scope">
-        {{ scope.row.session_key ? scope.row.session_key : "暂无" }}
-      </template>
+      <template #default="scope"> {{ scope.row.user.name }}</template>
+    </el-table-column>
+    <el-table-column
+      prop="title"
+      label="题目"
+      align="center"
+      show-overflow-tooltip
+    >
     </el-table-column>
     <el-table-column prop="time" label="添加时间" width="160" align="center">
       <template #default="scope">
@@ -107,20 +95,25 @@
 
 <script setup lang="ts">
 definePageMeta({
-  order: 2,
-  title: "用户列表",
-  icon: "sg sg-yonghuliebiao",
+  order: 3,
+  title: "搜题记录",
+  icon: "sg sg-qSrecords",
 });
+
 // 表格条件查询
 const tabelQuery = reactive<any>({
   typeList: [
+    {
+      value: "title",
+      label: "题目",
+    },
     {
       value: "name",
       label: "用户名",
     },
   ],
   inputQuery: {
-    type: "name",
+    type: "title",
     content: "",
     reset: () => {
       tabelQuery.inputQuery.type = "name";
@@ -152,34 +145,73 @@ const getData = (query = {} as any) => {
   query.paging = 1;
   query.fuzzy = 1;
 
+  // 先获取所有用户，前端处理
   useAxios({
     url: "/api/admin/usersGet",
-    data: query,
   })
-    .then((r: any) => {
-      if (r.code === 200) {
-        let zIndex = 0;
-        let timer = setInterval(() => {
-          if (zIndex === r.data.length) {
-            clearInterval(timer);
+    .then((r_users: any) => {
+      if (r_users.code === 200) {
+        query.paging = 1;
+        // 再获取搜题记录
+        useAxios({
+          url: "/api/admin/titlesGet",
+          data: query,
+        })
+          .then((r: any) => {
+            if (r.code === 200) {
+              for (let i in r.data) {
+                r.data[i].user = {};
+
+                r.data[i].user.name = r_users.data.find(
+                  (item: any) => item.openid === r.data[i].openid
+                )
+                  ? r_users.data.find(
+                      (item: any) => item.openid === r.data[i].openid
+                    ).name
+                  : "";
+              }
+              let zIndex = 0;
+              let timer = setInterval(() => {
+                if (zIndex === r.data.length) {
+                  clearInterval(timer);
+                  tableData.loading = false;
+                  return;
+                }
+                tableData.list.push(r.data[zIndex]);
+                zIndex++;
+              }, 10);
+              tableData.paging.total = r.total;
+              tableData.paging.pages = r.pages;
+              tableData.paging.page = r.page;
+              tableData.paging.size = r.size;
+            } else {
+              tableData.loading = false;
+              ElMessage({
+                message: "异常！请刷新页面重试",
+                showClose: true,
+                center: true,
+              });
+            }
+          })
+          .catch((err_titles: any) => {
+            console.log(404);
             tableData.loading = false;
-            return;
-          }
-          tableData.list.push(r.data[zIndex]);
-          zIndex++;
-        }, 10);
-        tableData.paging.total = r.total;
-        tableData.paging.pages = r.pages;
-        tableData.paging.page = r.page;
-        tableData.paging.size = r.size;
+            ElMessage({
+              message: "异常1！请刷新页面重试",
+              showClose: true,
+              center: true,
+            });
+          });
       } else {
-        tableData.loading = false;
         ElMessage({
           message: "异常！请刷新页面重试",
           showClose: true,
           center: true,
         });
       }
+      setTimeout(() => {
+        tableData.loading = false;
+      }, 300);
     })
     .catch((err: any) => {
       tableData.loading = false;

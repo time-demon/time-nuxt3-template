@@ -84,7 +84,6 @@ import { User, Lock } from "@element-plus/icons-vue";
 import { FormInstance, FormRules } from "element-plus";
 import { adminConfig } from "~/stores/adminConfig";
 import { adminInfor } from "~/stores/adminInfor";
-import axios from "~/server/axios";
 import { PROPERTY_TYPES } from "@babel/types";
 const store = reactive<any>(adminConfig());
 
@@ -154,7 +153,7 @@ const loginIn = async (formEl: FormInstance | undefined) => {
       }
 
       // 开始登录 接口自定义，文件在 server/api/admin/login.ts
-      axios({
+      useAxios({
         url: "/api/admin/login",
         data: loginForm,
       })

@@ -27,7 +27,6 @@
 
 <script setup lang="ts">
 import { adminConfig } from "~/stores/adminConfig";
-import axios from "~/server/axios";
 // 设置SEO
 useHead({
   titleTemplate: (productCategory: any) => {
@@ -51,7 +50,7 @@ const getConfig = async () => {
     return;
   }
 
-  axios({
+  useAxios({
     url: "/api/admin/config",
     data: {
       type: "admin",

@@ -62,4 +62,4 @@ npm run build
 
 # 公共方法
 
-- usetimeDate() 获取时间日期，有多种格式；如需解析时间，格式：usetimeDate('parse',time)
+- useTimeDate() 获取时间日期，有多种格式；如需解析时间，格式：useTimeDate('parse',time)

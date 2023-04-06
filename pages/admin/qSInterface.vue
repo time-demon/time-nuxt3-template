@@ -1,4 +1,4 @@
-<!-- 搜题记录 -->
+<!-- 搜题接口 -->
 <template>
   <Title> {{ $route.meta.title }}</Title>
   <div class="tabelQueryBox">
@@ -26,8 +26,8 @@
           style="width: 140px"
           v-model="tabelQuery.inputQuery.content"
           :placeholder="`请输入${tabelQuery.typeList.find(
-              (item:any) => item.value === tabelQuery.inputQuery.type
-            ).label}...`"
+            (item:any) => item.value === tabelQuery.inputQuery.type
+          ).label}...`"
           clearable
         />
       </el-form-item>
@@ -46,35 +46,60 @@
     style="width: 100%"
     border
   >
-    <el-table-column type="selection" width="40" align="center" />
+    <el-table-column type="selection" width="40" fixed align="center" />
     <el-table-column
       prop="name"
-      label="用户名"
+      label="题库名称"
       width="100"
       show-overflow-tooltip
     />
     <el-table-column
-      prop="title"
-      label="题目"
-      width="300"
+      prop="method"
+      label="Method"
+      width="80"
       align="center"
       show-overflow-tooltip
     >
+      <template #default="scope">
+        {{ scope.row.method }}
+      </template>
     </el-table-column>
     <el-table-column
-      prop="openid"
-      label="OpenID"
-      align="center"
-      width="260"
+      prop="token"
+      label="Token"
+      width="280"
       show-overflow-tooltip
-    />
+    >
+      <template #default="scope">
+        {{ scope.row.token }}
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="url"
+      label="接口URL"
+      width="280"
+      show-overflow-tooltip
+    >
+      <template #default="scope">
+        {{ scope.row.url }}
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="subname"
+      label="描述"
+      width="280"
+      show-overflow-tooltip
+    >
+      <template #default="scope">
+        {{ scope.row.subname }}
+      </template>
+    </el-table-column>
     <el-table-column prop="time" label="添加时间" width="160" align="center">
       <template #default="scope">
-        {{ parseFloat(scope.row.time) }}
         {{
-          timeDate("parse", scope.row.time)
-            ? timeDate("parse", scope.row.time).fullDateTime
-            : timeDate("parse", scope.row.time)
+          useTimeDate("parse", scope.row.time)
+            ? useTimeDate("parse", scope.row.time).fullDateTime
+            : useTimeDate("parse", scope.row.time)
         }}
       </template>
     </el-table-column>
@@ -100,11 +125,10 @@
 </template>
 
 <script setup lang="ts">
-import axios from "~/server/axios";
 definePageMeta({
-  order: 1,
-  title: "搜题记录",
-  icon: "sg sg-yonghuliebiao",
+  order: 4,
+  title: "接口管理",
+  icon: "sg sg-apis",
 });
 
 // 表格条件查询
@@ -112,7 +136,7 @@ const tabelQuery = reactive<any>({
   typeList: [
     {
       value: "name",
-      label: "用户名",
+      label: "题库名称",
     },
   ],
   inputQuery: {
@@ -142,29 +166,40 @@ const tableData = reactive<any>({
 });
 // 获取表格数据
 const getData = (query = {} as any) => {
+  tableData.list = [];
   tableData.loading = true;
   query = Object.assign(query, tableData.paging);
-  axios({
-    url: "/api/admin/titlesGet",
+  query.paging = 1;
+  query.fuzzy = 1;
+
+  useAxios({
+    url: "/api/admin/qSInterfaceGet",
     data: query,
   })
     .then((r: any) => {
       if (r.code === 200) {
-        tableData.list = r.data;
+        let zIndex = 0;
+        let timer = setInterval(() => {
+          if (zIndex === r.data.length) {
+            clearInterval(timer);
+            tableData.loading = false;
+            return;
+          }
+          tableData.list.push(r.data[zIndex]);
+          zIndex++;
+        }, 10);
         tableData.paging.total = r.total;
         tableData.paging.pages = r.pages;
         tableData.paging.page = r.page;
         tableData.paging.size = r.size;
       } else {
+        tableData.loading = false;
         ElMessage({
           message: "异常！请刷新页面重试",
           showClose: true,
           center: true,
         });
       }
-      setTimeout(() => {
-        tableData.loading = false;
-      }, 300);
     })
     .catch((err: any) => {
       tableData.loading = false;

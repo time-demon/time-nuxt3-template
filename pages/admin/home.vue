@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  order: 1,
+  order: -999999,
   title: "数据概况",
   icon: "sg sg-gongzuotai_workbench",
 });

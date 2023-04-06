@@ -14,17 +14,15 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "stylesheet",
-          href: "//at.alicdn.com/t/c/font_3778480_qiuek0y7cyf.css",
+          href: "//at.alicdn.com/t/c/font_3778480_90ejg2xc4ur.css",
         },
       ],
       noscript: [{ children: "JavaScript is required" }],
     },
   },
   css: [
-    "element-plus/dist/index.css",
+    // "element-plus/dist/index.css",
     "@/assets/main.scss",
-    "@/assets/elemntUI.scss",
-    "@/assets/root.scss",
   ],
   modules: [
     "@element-plus/nuxt",

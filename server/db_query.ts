@@ -1,35 +1,56 @@
-// 查询
-// 默认获取符合条件的全部数据，type为paging时分页
+// 查询示例
+// 默认获取符合条件的全部数据，
+// 开启分页获取功能：query.paging 为true
+// 开启模糊搜索功能：query.fuzzy 为true
 import { MongoClient } from "mongodb";
 import url from "~/server/mongodb";
 
 function db_query(config = {} as any) {
   const mongodb = MongoClient.connect(url);
-  // 这是一个查询示例
   return new Promise((resolve, reject) => {
     mongodb
       .then((conn: any) => {
         let dbTable = null as any;
-        // 分页获取
-        // 传入 page 和 size 即可
-        if (config && config.type === "paging") {
-          const pageConfig = {
-            total: 0, // 总条数
-            pages: 0, // 总页数
-            page: 1, // 当前页
-            size: 10, // 每页条数
-          } as any;
-          if (config.query.page) {
-            pageConfig.page = parseInt(config.query.page);
+
+        const pageConfig = {
+          total: 0, // 总条数
+          pages: 0, // 总页数
+          page: 1, // 当前页
+          size: 10, // 每页条数
+        } as any;
+        //
+        const query_config = JSON.parse(JSON.stringify(config));
+
+        // 传入 paging:true 开启分页获取功能
+        if (query_config.query.paging === "0") {
+          query_config.query.paging = false;
+        }
+
+        if (JSON.stringify(config.query) !== "{}") {
+          // 传入 fuzzy:true 开启模糊搜索
+          if (config.query.fuzzy || config.query.fuzzy === "0") {
+            for (let i in config.query) {
+              config.query[i] = eval(`/${config.query[i]}/i`);
+            }
           }
-          if (config.query.size) {
-            pageConfig.size = parseInt(config.query.size);
+        }
+
+        // 清理一下不需要的key
+        delete config.query.paging;
+        delete config.query.fuzzy;
+        for (let i in pageConfig) {
+          delete config.query[i];
+        }
+
+        // 分页
+        if (config && query_config.query.paging) {
+          if (query_config.query.page) {
+            pageConfig.page = parseInt(query_config.query.page);
+          }
+          if (query_config.query.size) {
+            pageConfig.size = parseInt(query_config.query.size);
           }
 
-          // 清理一下分页才需要的key
-          for (let i in pageConfig) {
-            delete config.query[i];
-          }
           // 先获取总数
           conn
             .db()
@@ -66,6 +87,7 @@ function db_query(config = {} as any) {
           return;
         } else {
           // 不分页，获取符合条件的全部数据
+
           dbTable = conn
             .db()
             .collection(config.table)

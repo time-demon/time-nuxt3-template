@@ -105,5 +105,5 @@ export default function (type: string, time: number | string) {
           : new Date().getSeconds()),
     };
   }
-  return date;
+  return date as any;
 }

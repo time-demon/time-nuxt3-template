@@ -1,4 +1,6 @@
+// axios网络访问
 import axios from "axios";
+
 // 创建axios实例
 const requester = axios.create({
   //设置基础路径
@@ -28,7 +30,7 @@ requester.interceptors.response.use(
   },
   // 抛出错误
   (error) => {
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   }
 );
 
