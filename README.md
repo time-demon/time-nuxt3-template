@@ -62,4 +62,5 @@ npm run build
 
 # 公共方法
 
-- useTimeDate() 获取时间日期，有多种格式；如需解析时间，格式：useTimeDate('parse',time)
+- useTimeDate() 获取时间日期，有多种格式；如需解析时间，格式：useTimeDate('parse',time)，无需手动导入！
+- useAxios() 使用集成的axios，无需手动导入！
