@@ -2,7 +2,7 @@
 import { adminInfor } from "~/stores/adminInfor";
 
 export default {
-  mounted(el, binding, vnode, prevVnode) {
+  mounted(el: any, binding: any, vnode: any, prevVnode: any) {
     if (adminInfor().adminInfor.role !== "admin") {
       // 点击事件
       if (/switch|button/gi.test(el.className)) {
