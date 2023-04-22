@@ -11,14 +11,10 @@
     <!-- 后台页面 -->
     <template v-else>
       <NuxtLayout name="admin">
-        <!-- <NuxtPage /> -->
         <template #main>
-          <router-view
-            v-slot="{ Component, route }"
-            v-if="adminConfig().pageState"
-          >
-            <keep-alive>
-              <component :is="Component" :key="route.fullPath" />
+          <router-view v-slot="{ Component, route }">
+            <keep-alive :include="useKeepAliveRoutes()">
+              <component :is="Component" />
             </keep-alive>
           </router-view>
         </template>
@@ -29,6 +25,10 @@
 
 <script setup lang="ts">
 import { adminConfig } from "~/stores/adminConfig";
+definePageMeta({
+  middleware: ["admin"],
+});
+
 // 设置SEO
 useHead({
   titleTemplate: (productCategory: any) => {
@@ -46,11 +46,11 @@ const pageLoadingConfig = reactive<any>({
 // 获取后台配置
 const getConfig = async () => {
   // 对接接口时请删除这个！
-  if (true) {
-    pageLoadingConfig.loading = false;
-    adminConfig().adminConfigSet({ title: "time-nuxt3-template" });
-    return;
-  }
+  // if (true) {
+  //   pageLoadingConfig.loading = false;
+  //   adminConfig().adminConfigSet({ title: "time-nuxt3-template" });
+  //   return;
+  // }
 
   useAxios({
     url: "/api/admin/config",
@@ -86,4 +86,14 @@ const getConfig = async () => {
 getConfig();
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+</style>

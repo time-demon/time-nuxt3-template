@@ -4,9 +4,15 @@
     :style="[{ width: sidebarConfig.state ? '210px' : '0px' }]"
   >
     <div class="sidebarBox">
-      <div class="logoBox">{{ store.adminConfig.title }} · 后台</div>
-      <div class="sidebar">
+      <header class="logoBox">{{ store.adminConfig.title }} · 后台</header>
+
+      <nav class="sidebar">
         <el-menu
+          style="
+            --el-menu-text-color: var(--siderbar-color);
+            --el-menu-active-color: var(--siderbar-menu-active-color);
+            --el-menu-item-height: var(--siderbar-menu-item-height);
+          "
           :default-active="sidebarConfig.active"
           :collapse="sidebarConfig.collapse"
           background-color="transparent"
@@ -26,6 +32,7 @@
               >
                 <i :class="item.meta.icon"></i>&nbsp;
                 <span>{{ item.meta.title }}</span>
+                <span>{{ item.meta.routingChip }}</span>
               </el-menu-item>
             </template>
             <!-- 一级菜单、有二级菜单的 -->
@@ -85,11 +92,12 @@
             </template>
           </template>
         </el-menu>
-      </div>
-      <div class="copyright flexCenter">
+      </nav>
+
+      <footer class="copyright flexCenter">
         {{ new Date().getFullYear() }} &nbsp;&copy;
         {{ store.adminConfig.title ? store.adminConfig.title : 2 }}
-      </div>
+      </footer>
     </div>
   </div>
   <div
@@ -158,9 +166,9 @@
       <!-- 路由屑 -->
       <RoutingChip />
       <!-- 路由屑 -->
-      <div class="mainBox">
+      <main class="mainBox">
         <slot name="main" />
-      </div>
+      </main>
     </div>
   </div>
 
@@ -263,7 +271,7 @@ onMounted(() => {
 
 // 刷新main盒
 const refreshMain = () => {
-  adminConfig().pageRefresh();
+  adminConfig().pageRefresh("刷新成功");
 };
 
 // 退出登录
@@ -288,6 +296,7 @@ const logOut = async () => {
     display: flex;
     vertical-align: top;
     flex-direction: column;
+    background: var(--siderbar-bg);
     > .logoBox {
       position: relative;
       height: 50px;
@@ -297,6 +306,8 @@ const logOut = async () => {
       align-items: center;
       font-size: 16px;
       font-weight: 300;
+      background-color: var(--siderbar-head-bg);
+      color: var(--siderbar-head-color);
     }
     > .logoBox::after {
       content: "";
@@ -305,9 +316,9 @@ const logOut = async () => {
       bottom: 0;
       width: 100%;
       height: 0;
-      border-bottom: 1px solid #eeeeee;
     }
     > .sidebar {
+      padding: 10px 0;
       flex: auto;
       overflow: auto;
       :deep(.el-menu) {
@@ -319,7 +330,7 @@ const logOut = async () => {
       height: 50px;
       position: relative;
       font-size: 12px;
-      color: #aaaaaa;
+      color: var(--siderbar-color);
     }
     > .copyright::before {
       content: "";
@@ -329,7 +340,7 @@ const logOut = async () => {
       top: 0;
       width: 80%;
       height: 0;
-      border-top: 1px solid #eeeeee;
+      border-top: var(--siderbar-border);
     }
   }
 }

@@ -78,7 +78,7 @@ function db_query(config = {} as any) {
             })
             .catch((err: any) => {
               // 数据操作失败
-              reject();
+              reject(err);
             })
             .finally(() => {
               // 取消
@@ -98,7 +98,7 @@ function db_query(config = {} as any) {
       })
       .catch((err: any) => {
         // 数据库连接失败
-        reject();
+        reject(err);
       });
   });
 }
@@ -116,7 +116,7 @@ function query({
     })
     .catch((err: any) => {
       // 数据操作失败
-      reject();
+      reject(err);
     })
     .finally(() => {
       // 取消

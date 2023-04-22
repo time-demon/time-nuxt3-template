@@ -1,6 +1,5 @@
 // axios网络访问
 import axios from "axios";
-import { adminInfor } from "@/stores/adminInfor";
 
 // 创建axios实例
 const requester = axios.create({
@@ -15,7 +14,6 @@ requester.interceptors.request.use(
   (config) => {
     // 发送请求前的处理
     // 这里可以处理 token
-    config.headers.Authorization = `Bearer ${adminInfor().adminInfor.token}`;
     // console.log("config", config);
 
     return config;
@@ -30,10 +28,6 @@ requester.interceptors.request.use(
 requester.interceptors.response.use(
   //处理响应数据
   (response) => {
-    if (response.data.code === 401) {
-      console.log("token已失效");
-      adminInfor().logOut();
-    }
     return response.data;
   },
   // 抛出错误

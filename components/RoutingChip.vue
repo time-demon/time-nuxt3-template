@@ -6,7 +6,9 @@
       :class="[$route.name === home_routes.name ? 'this_navbar' : '']"
       @click="goPath(home_routes)"
     >
-      <span class="title"> {{ home_routes.meta.title }}{{}} </span>
+      <span class="title">
+        {{ home_routes.meta.title }}
+      </span>
     </li>
     <template v-for="item in store_adminNavbar.adminNavbar" :key="item.name">
       <li
@@ -16,6 +18,9 @@
         @click.stop="goPath(item)"
       >
         <span class="title">
+          <el-icon v-if="item.meta.keepAlive" :size="14" style="scale: 0.8">
+            <Ship />
+          </el-icon>
           {{ item.meta.title }}
         </span>
         <span class="close" @click.stop="navbarClose(item)">
@@ -24,9 +29,50 @@
       </li>
     </template>
     <li class="navbarTools">
-      <div><i class="sg sg-shuangbottom_double-bottom-copy"></i></div>
-      <ul class="navbarToolsUl">
-        <li class="navbarToolsLi" @click="navbarClose('', 'all')">关闭所有</li>
+      <ul class="navbarToolsUl" type="none">
+        <li class="navbarToolsLi">
+          <el-dropdown trigger="click" size="small">
+            <el-icon style="font-size: 12px">
+              <ArrowDown />
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  :disabled="adminNavbar().adminNavbar.length === 0"
+                  @click="navbarClose('', 'all')"
+                >
+                  <div style="font-size: 12px">关闭所有</div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </li>
+        <li class="navbarToolsLi">
+          <el-popover
+            :popper-class="'adminRoutingChipNavbarToolsPopover'"
+            placement="bottom"
+            :width="'auto'"
+            trigger="click"
+          >
+            <template #reference>
+              <el-icon style="font-size: 12px">
+                <Warning />
+              </el-icon>
+            </template>
+            <ul class="ul">
+              <ul type="none">
+                <li>
+                  <el-divider content-position="left">
+                    <el-text size="small">状态说明</el-text>
+                  </el-divider>
+                  <div style="font-size: 12px">
+                    <el-icon> <Ship /> </el-icon>&nbsp;代表该路由被缓存
+                  </div>
+                </li>
+              </ul>
+            </ul>
+          </el-popover>
+        </li>
       </ul>
     </li>
   </ul>
@@ -97,6 +143,7 @@ const navbarClose = (data: any, type: any) => {
 
 <style scoped lang="scss">
 .navbarBox {
+  z-index: 1;
   position: relative;
   background: #ffffff;
   height: 36px;
@@ -120,10 +167,17 @@ const navbarClose = (data: any, type: any) => {
     cursor: pointer;
     > .title {
       z-index: 1;
+      display: flex;
+      vertical-align: top;
+      align-items: center;
+      justify-content: center;
+      i {
+        margin-right: 3px;
+      }
     }
     > .close {
       z-index: 1;
-      margin: 0 0 0 5px;
+      margin: 0 0 0 2px;
       height: 100%;
       display: flex;
       align-items: center;
@@ -131,6 +185,21 @@ const navbarClose = (data: any, type: any) => {
         font-size: 12px;
         display: inline-block;
         scale: 0.6;
+        padding: 2px;
+      }
+    }
+    > .close:hover {
+      > i {
+        background: var(--siderbar-head-bg);
+        border-radius: 50%;
+        color: #ffffff;
+      }
+    }
+    > .close:active {
+      > i {
+        background: var(--siderbar-head-bg);
+        border-radius: 50%;
+        color: #ffffff;
       }
     }
   }
@@ -147,53 +216,70 @@ const navbarClose = (data: any, type: any) => {
     border: 1px solid #d8dce5;
     border-radius: 2px;
   }
+  > .navbar:hover::after {
+    border: 1px solid var(--siderbar-head-bg);
+  }
   > .this_navbar {
-    background: #409eff;
+    background: var(--siderbar-head-bg);
     color: #ffffff;
-    i {
+    > .title i {
       color: #ffffff;
+    }
+    > .close:hover {
+      > i {
+        background: #ffffff;
+        border-radius: 50%;
+        color: initial;
+      }
+    }
+    > .close:active {
+      > i {
+        background: #ffffff;
+        border-radius: 50%;
+        color: initial;
+      }
     }
   }
   > .navbarTools {
+    z-index: 1;
     cursor: pointer;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 10px;
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
     height: 100%;
-    z-index: 999999;
     width: auto;
+    padding: 0 5px;
     > .navbarToolsUl {
-      display: none;
-      position: absolute;
-      top: 30px;
-      right: 5px;
-      background: #ffffff;
-      border-radius: 3px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      height: 100%;
+      display: flex;
+      vertical-align: top;
       > .navbarToolsLi {
-        width: auto;
-        max-width: 100vw;
-        min-width: 80px;
-        padding: 5px 15px;
-        cursor: pointer;
+        width: 25px;
         display: flex;
+        vertical-align: top;
         align-items: center;
+        justify-content: center;
+        > .el-dropdown {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .el-icon {
+          width: 100%;
+          height: 100%;
+          svg {
+          }
+        }
       }
-      > .navbarToolsLi:nth-of-type(1) {
-        padding-top: 10px;
-      }
-      > .navbarToolsLi:nth-last-of-type(1) {
-        padding-bottom: 10px;
-      }
-      > .navbarToolsLi:hover {
-        background: #f5f7fa;
+      > .navbarToolsLi:active {
+        background: #fff8f8;
       }
     }
   }
@@ -206,11 +292,6 @@ const navbarClose = (data: any, type: any) => {
     width: 0px;
     height: 50%;
     border-left: 0.5px solid #dddddd;
-  }
-  > .navbarTools:hover {
-    > .navbarToolsUl {
-      display: block;
-    }
   }
 }
 .navbarBox::after {

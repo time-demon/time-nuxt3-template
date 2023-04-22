@@ -9,26 +9,24 @@
         @click="copyIcon(item)"
       >
         <i :class="[iconConfig.qianzhui, item]"></i>
-        <!-- <p class="iconName">{{ item.split("-")[1] }}</p> -->
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
+import useAxios from "@/server/utils/useAxios";
 definePageMeta({
   order: 1,
   title: "图标Icon",
   icon: "sg sg-xingxing_star",
 });
-
 // 图标配置
 const iconConfig = reactive({
-  url: "//at.alicdn.com/t/c/font_3778480_5z78tg3p77f.css",
+  url: "https://at.alicdn.com/t/c/font_3778480_5z78tg3p77f.css",
   qianzhui: "sg",
   state: true,
 });
-
 // 复制icon
 const copyIcon = (text: string) => {
   navigator.clipboard.writeText(text).then(

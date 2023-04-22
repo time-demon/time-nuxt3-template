@@ -28,8 +28,13 @@ export default defineEventHandler(async (event: any) => {
             returnData = { code: -1, msg: "密码错误" };
             return;
           }
+          // 账号和密码都对
+          r2.data[0].token = useToken({
+            type: "sign",
+            data: r2.data[0],
+          });
           returnData.code = 200;
-          returnData.data = r2.data;
+          returnData.data = r2.data[0];
         })
         .catch((err2: any) => {
           returnData.code = -1;

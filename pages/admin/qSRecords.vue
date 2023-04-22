@@ -32,12 +32,23 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="tabelqueryGo">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="info" text @click="tabelqueryReset">重置</el-button>
+        <el-button type="info" @click="tabelqueryGo">查询</el-button>
       </el-form-item>
     </el-form>
+    <el-button type="info" text @click="tabelqueryReset">重置</el-button>
+    <el-popconfirm
+      width="120"
+      confirm-button-text="删除"
+      cancel-button-text="取消"
+      :icon="InfoFilled"
+      icon-color="#626AEF"
+      title="是否确定删除?"
+      @confirm="delData({ type: 'more' })"
+    >
+      <template #reference>
+        <el-button v-roleVerify>批量删除</el-button>
+      </template>
+    </el-popconfirm>
   </div>
   <el-table
     v-loading="tableData.loading"
@@ -45,6 +56,7 @@
     stripe
     style="width: 100%"
     border
+    @selection-change="selectionChange"
   >
     <el-table-column fixed type="selection" width="40" align="center" />
     <el-table-column
@@ -74,30 +86,49 @@
     </el-table-column>
     <!-- 右边操作 -->
     <el-table-column fixed="right" label="操作" width="100" align="center">
-      <template #default>
+      <template #default="scope">
         <el-button link type="warning" size="small">修改</el-button>
-        <el-button link type="danger" size="small">删除</el-button>
+        <el-popconfirm
+          width="120"
+          confirm-button-text="删除"
+          cancel-button-text="取消"
+          :icon="InfoFilled"
+          icon-color="#626AEF"
+          title="是否确定删除?"
+          @confirm="delData({ scope })"
+        >
+          <template #reference>
+            <el-button v-roleVerify link type="danger" size="small">
+              删除
+            </el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
     <!-- 右边操作 -->
   </el-table>
+
+  <!-- 分页 -->
   <el-pagination
-    style="float: right; margin: 10px 0 0"
+    style="float: right; margin: 10px 0"
     v-model:current-page="tableData.paging.page"
     v-model:page-size="tableData.paging.size"
     :page-sizes="[20, 40, 80, 160]"
     layout="sizes, prev, pager, next"
     :total="tableData.paging.total"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
+    @size-change="pagingSizeChange"
+    @current-change="pagingCurrentChange"
   />
+  <!-- 分页 -->
 </template>
 
 <script setup lang="ts">
+import { InfoFilled } from "@element-plus/icons-vue";
 definePageMeta({
   order: 3,
   title: "搜题记录",
   icon: "sg sg-qSrecords",
+  keepAlive: true,
 });
 
 // 表格条件查询
@@ -135,10 +166,57 @@ const tabelqueryReset = () => {
   getData({ size: 20 });
 };
 
+// 表格多选
+const selectionData = reactive<any>([]);
+const selectionChange = (e: any) => {
+  selectionData.length = 0;
+  for (let i = 0; i < e.length; i++) {
+    selectionData.push(e[i]._id);
+  }
+};
+// 删除
+const delData = ({ scope, type }: any) => {
+  tableData.loading = true;
+  useAxios({
+    method: "delete",
+    url: "/api/admin/qSRecords/del",
+    data: {
+      type: "_id",
+      _id: type === "more" ? selectionData : scope.row._id,
+    },
+  })
+    .then((r: any) => {
+      tableData.loading = false;
+      if (r.code === 200) {
+        ElMessage({
+          message: "删除成功",
+          center: true,
+          duration: 1000,
+          type: "success",
+        });
+        getData();
+      } else {
+        ElMessage({
+          message: r.msg,
+          showClose: true,
+          center: true,
+        });
+      }
+    })
+    .catch((err: any) => {
+      tableData.loading = false;
+      ElMessage({
+        message: "异常！请刷新页面重试",
+        showClose: true,
+        center: true,
+      });
+    });
+};
+
 // 表格数据配置
 const tableData = reactive<any>({
   loading: true,
-  list: [],
+  list: [], // 数据
   paging: {}, // 分页
 });
 // 获取表格数据
@@ -148,23 +226,24 @@ const getData = (query = {} as any) => {
   query = Object.assign(query, tableData.paging);
   query.paging = 1;
   query.fuzzy = 1;
+  delete query.total;
+  delete query.pages;
 
   // 先获取所有用户，前端处理
   useAxios({
-    url: "/api/admin/usersGet",
+    url: "/api/admin/users/get",
   })
     .then((r_users: any) => {
       if (r_users.code === 200) {
         // 再获取搜题记录
         useAxios({
-          url: "/api/admin/titlesGet",
+          url: "/api/admin/qSRecords/get",
           data: query,
         })
           .then((r: any) => {
             if (r.code === 200) {
-              for (let i in r.data) {
+              for (let i = 0; i < r.data.length; i++) {
                 r.data[i].user = {};
-
                 r.data[i].user.name = r_users.data.find(
                   (item: any) => item.openid === r.data[i].openid
                 )
@@ -225,17 +304,22 @@ const getData = (query = {} as any) => {
       });
     });
 };
-getData({ size: 20 });
-// 更改每天条数
-const handleSizeChange = (val: number) => {
+onMounted(() => {
+  getData({ size: 20 });
+});
+
+// ---- 分页控制 ---- //
+// 更改每页条数
+const pagingSizeChange = (val: number) => {
   tableData.size = val;
   getData();
 };
 // 更改页数
-const handleCurrentChange = (val: number) => {
+const pagingCurrentChange = (val: number) => {
   tableData.page = val;
   getData();
 };
+// ---- 分页控制 ---- //
 </script>
 
 <style scoped lang="scss">

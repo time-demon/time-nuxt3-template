@@ -1,5 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  nitro: {
+    // 代理配置
+    devProxy: {
+      "/proxy/sohu": {
+        target: "https://pv.sohu.com/",
+        prependPath: true,
+        changeOrigin: true,
+      },
+    },
+  },
   app: {
     head: {
       charset: "utf-8",
@@ -8,7 +18,7 @@ export default defineNuxtConfig({
         { name: "description", content: "时光后台管理系统" },
         {
           name: "keywords",
-          content: "时光",
+          content: "时光,时光小灶,timebk.cn",
         },
       ],
       link: [
@@ -20,17 +30,14 @@ export default defineNuxtConfig({
       noscript: [{ children: "JavaScript is required" }],
     },
   },
-  css: [
-    // "element-plus/dist/index.css",
-    "@/assets/main.scss",
-  ],
+  plugins: ["@/plugins/directives"],
+  css: ["@/assets/main.scss"],
   modules: [
     "@element-plus/nuxt",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
   ],
   elementPlus: {
-    /** Options */
     icon: "ElIcon",
   },
 });

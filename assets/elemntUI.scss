@@ -1,6 +1,29 @@
 // elment plus 组件样式定制
 :root {
+  .el-icon {
+    --color: initial;
+  }
   .el-dropdown {
     width: auto;
+  }
+  .el-dialog {
+    max-width: 100vw;
+  }
+  @media screen and (max-width: 768px) {
+    .el-dialog {
+      width: 95vw;
+    }
+  }
+  .el-divider--horizontal {
+    margin: 10px 0;
+  }
+  .el-menu-item:hover {
+    background: var(--siderbar-menu-hover-bg);
+    color: var(--siderbar-menu-hover-color);
+  }
+
+  .el-menu-item.is-active {
+    background: var(--siderbar-menu-active-bg);
+    color: var(--siderbar-menu-active-color);
   }
 }

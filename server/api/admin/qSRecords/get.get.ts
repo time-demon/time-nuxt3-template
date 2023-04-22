@@ -4,7 +4,7 @@ export default defineEventHandler(async (event: any) => {
   const query = getQuery(event);
   let returnData = {} as any;
 
-  await db_query({ query: query, table: "apis" })
+  await db_query({ query: query, table: "recordTitle" })
     .then((r: any) => {
       returnData = r;
       returnData.code = 200;

@@ -32,7 +32,7 @@ export const adminInfor = defineStore("adminInfor", {
         message: "已退出登录",
         showClose: true,
         center: true,
-        duration: 1000,
+        duration: 2000,
       });
       useRouter().push({ name: "admin-login" });
     },

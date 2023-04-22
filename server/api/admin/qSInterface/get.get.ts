@@ -4,13 +4,18 @@ export default defineEventHandler(async (event: any) => {
   const query = getQuery(event);
   let returnData = {} as any;
 
-  await db_query({ query: query, table: "user" })
+  await db_query({ query: query, table: "apis" })
     .then((r: any) => {
+
       returnData = r;
       returnData.code = 200;
     })
-    .catch((err) => {
-      returnData.code = -1;
+    .catch((err: any) => {
+      returnData = {
+        code: -1,
+        msg: "异常",
+        err: err,
+      };
     });
   return returnData;
 });
