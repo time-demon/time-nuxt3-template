@@ -18,7 +18,7 @@ const lc_config = {
   // 端口，一般27017默认即可
   port: "27017",
   // 数据库名称
-  dbname: "",
+  dbname: "time_souti_new",
   // 用户名
   name: "",
   // 密码
@@ -27,4 +27,6 @@ const lc_config = {
 const url_db = `mongodb://${db_config.name}:${db_config.password}@${db_config.ip}:${db_config.port}/${db_config.dbname}`;
 const url_lc = `mongodb://${lc_config.ip}:${lc_config.port}/${lc_config.dbname}`;
 
-export default process.env.NODE_ENV === "development" ? url_lc : url_db;
+export default () => {
+  return process.env.NODE_ENV === "development" ? url_lc : url_db;
+};

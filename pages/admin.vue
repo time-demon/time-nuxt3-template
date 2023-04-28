@@ -11,13 +11,11 @@
     <!-- 后台页面 -->
     <template v-else>
       <NuxtLayout name="admin">
-        <template #main>
-          <router-view v-slot="{ Component, route }">
-            <keep-alive :include="useKeepAliveRoutes()">
-              <component :is="Component" />
-            </keep-alive>
-          </router-view>
-        </template>
+        <NuxtPage v-slot="{ Component, route }" v-if="!$route.meta.pageState">
+          <keep-alive :include="useKeepAliveRoutes()">
+            <component :is="Component" />
+          </keep-alive>
+        </NuxtPage>
       </NuxtLayout>
     </template>
   </div>
@@ -45,12 +43,12 @@ const pageLoadingConfig = reactive<any>({
 
 // 获取后台配置
 const getConfig = async () => {
-  // 对接接口时请删除这个！
-  // if (true) {
-  //   pageLoadingConfig.loading = false;
-  //   adminConfig().adminConfigSet({ title: "time-nuxt3-template" });
-  //   return;
-  // }
+  // 开始开发时请删除这个！
+  if (true) {
+    pageLoadingConfig.loading = false;
+    adminConfig().adminConfigSet({ title: "time-nuxt3-template" });
+    return;
+  }
 
   useAxios({
     url: "/api/admin/config",

@@ -7,6 +7,9 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
+*:focus {
+  outline: none;
+}
 body {
   font-size: 16px;
   color: #333333;
@@ -17,12 +20,11 @@ body {
   min-height: 100vh;
   background: #fafafa;
 }
+
 .mainBox {
   padding: 10px;
 }
 .box {
-  padding: 10px 15px;
-  background: #ffffff;
   border-radius: 2px;
 }
 

@@ -1,15 +1,29 @@
 .dark {
-  --dark-color: #b09573;
-  --siderbar-bg: #49443d;
+}
+
+.light {
+  --theme-color: #b09573;
+  --theme-color2: #49443d;
+  --siderbar-bg: var(--theme-color2);
   --siderbar-color: #bfb7ac;
-  --siderbar-head-bg: #b09573;
+  --siderbar-head-bg: var(--theme-color);
   --siderbar-head-color: #ffffff;
   --siderbar-menu-hover-bg: transparent;
   --siderbar-menu-hover-color: #ffffff;
   --siderbar-menu-active-bg: #ffffff;
   --siderbar-menu-active-color: #333333;
   --siderbar-menu-item-height: 44px;
-  --siderbar-border: 1px solid #7e7e7e;
+  --siderbar-border: 0.5px solid #7e7e7e;
+
+  --el-color-primary: #b09573;
+  --el-menu-active-color: #b09573;
 }
-.light {
+
+#nprogress .bar {
+  background: linear-gradient(
+    90deg,
+    var(--light-color),
+    var(--light-color2)
+  ) !important; //自定义颜色
+  height: 50px;
 }

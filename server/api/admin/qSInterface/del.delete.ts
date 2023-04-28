@@ -1,10 +1,9 @@
 // 数据删除
-import db_delete from "~~/server/db_delete";
 
 export default defineEventHandler(async (event: any) => {
   const body = await readBody(event);
   let returnData = {} as any;
-  await db_delete(Object.assign({ table: "apis" }, { data: body }))
+  await useDbDel(Object.assign({ table: "apis" }, { data: body }))
     .then((r: any) => {
       if (!r.deletedCount) {
         returnData = {
@@ -24,6 +23,9 @@ export default defineEventHandler(async (event: any) => {
         msg: "异常，请重试",
         err: err,
       };
+      try {
+        useSaveError(err);
+      } catch {}
     });
 
   return returnData;

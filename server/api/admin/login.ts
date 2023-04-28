@@ -1,4 +1,3 @@
-import db_query from "~~/server/db_query";
 export default defineEventHandler(async (event: any) => {
   const query = getQuery(event);
   // 定义必须的参数
@@ -13,13 +12,13 @@ export default defineEventHandler(async (event: any) => {
   }
 
   let returnData = {} as any;
-  await db_query({ query: { account: query.account }, table: "admin" })
+  await useDbQuery({ query: { account: query.account }, table: "admin" })
     .then(async (r: any) => {
       if (!r.data.length) {
         returnData = { code: -1, msg: "账号不存在" };
         return;
       }
-      await db_query({
+      await useDbQuery({
         query: { account: query.account, password: query.password },
         table: "admin",
       })
@@ -42,6 +41,9 @@ export default defineEventHandler(async (event: any) => {
     })
     .catch((err) => {
       returnData.code = -1;
+      try {
+        useSaveError(err);
+      } catch {}
     });
   return returnData;
 });

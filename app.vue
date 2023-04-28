@@ -1,29 +1,26 @@
 <template>
-  <PageLoading v-if="PageLoadingConfig.state" />
+  <PageLoading />
   <!-- 后台管理系统布局 -->
+  <template v-if="$route.name.split('-')[0] === 'admin'">
+    <NuxtPage />
+  </template>
+  <!-- 前台布局 -->
   <template v-else>
-    <template v-if="route.name.split('-')[0] === 'admin'">
-      <NuxtPage />
-    </template>
-    <!-- 前台布局 -->
-    <template v-else>
-      <NuxtLayout>
-        <NuxtPage :page-key="$route.fullPath" />
-      </NuxtLayout>
-    </template>
+    <NuxtLayout>
+      <NuxtPage :page-key="$route.fullPath" />
+    </NuxtLayout>
   </template>
 </template>
 
 <script setup lang="ts">
-const route = useRoute() as any;
-const PageLoadingConfig = reactive<any>({
-  state: true,
+// 挂载后再加载，避免SSR很多渲染问题
+const pageOk = ref<boolean>(false);
+onMounted(() => {
+  pageOk.value = true;
 });
 onMounted(() => {
-  setTimeout(() => {
-    PageLoadingConfig.state = false;
-  }, 1500);
-  let body = document.body;
-  body.className = " dark";
+  // 更改主题class
+  const body = document.body;
+  body.classList.add("light");
 });
 </script>

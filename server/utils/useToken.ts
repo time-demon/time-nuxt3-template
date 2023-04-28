@@ -8,45 +8,11 @@ const useToken = ({
   data,
   token,
   key = "defalutKey",
-  time = '1d',
+  time = "1d",
 }: any) => {
-  //   return new Promise((resolve, reject) => {
-  //     // 生成token
-  //     if (type === "sign") {
-  //       const tokenNew = jwt.sign({ a: 1 }, key, { expiresIn: 20 });
-  //       resolve(tokenNew);
-  //     } else {
-  //       // 验证token
-  //       jwt.verify(token, key, (err: any, data: any) => {
-  //         // 如果抛出错误
-  //         if (err) {
-  //           switch (err.message) {
-  //             case "jwt malformed":
-  //               reject("不合法");
-  //               break;
-  //             case "invalid signature":
-  //               reject("密钥错误");
-  //               break;
-  //             case "invalid token":
-  //               reject("无效");
-  //               break;
-  //             case "jwt expired":
-  //               reject("失效");
-  //               break;
-  //             default:
-  //               reject("异常");
-  //               break;
-  //           }
-  //         } else {
-  //           console.log("有效");
-  //         }
-  //       });
-  //     }
-  //   });
 
   // 生成token
   if (type === "sign") {
-    console.log(time);
 
     const tokenNew = jwt.sign(data, key, { expiresIn: time });
     return tokenNew;
@@ -83,12 +49,9 @@ const useToken = ({
             break;
         }
       } else {
-        console.log("有效");
-
         return true;
       }
     });
-    console.log(tokenVerify);
 
     return tokenVerify;
   }

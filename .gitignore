@@ -10,3 +10,7 @@ dist
 /pages/admin/*
 !/pages/admin/sample.vue
 !/pages/admin/home.vue
+!/pages/admin/login.vue
+!/pages/admin/icon.vue
+/server/api/app/*
+/server/api/admin/*

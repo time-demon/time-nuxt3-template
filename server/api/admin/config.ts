@@ -1,4 +1,3 @@
-import db_query from "~~/server/db_query";
 export default defineEventHandler(async (event: any) => {
   const query = getQuery(event);
   let returnData = {} as any;
@@ -7,9 +6,28 @@ export default defineEventHandler(async (event: any) => {
     returnData.code = -1;
     return returnData;
   }
+  try {
+    let useDbQuery_return = (await useDbQuery({
+      query: query,
+      table: "config",
+    })) as any;
+    if (!useDbQuery_return.data.length) {
+      returnData = { code: -1, msg: "参数不合法" };
+      return;
+    }
+    useDbQuery_return.data = useDbQuery_return.data[0];
+    returnData = useDbQuery_return;
+    returnData.code = 200;
+  } catch (err) {
+    returnData.code = -1;
+    try {
+      useSaveError(err);
+    } catch {}
+  }
 
-  await db_query({ query: query, table: "config" })
+  await useDbQuery({ query: query, table: "config" })
     .then((r: any) => {
+      console.log(7);
       if (!r.data.length) {
         returnData = { code: -1, msg: "参数不合法" };
         return;
@@ -20,6 +38,9 @@ export default defineEventHandler(async (event: any) => {
     })
     .catch((err) => {
       returnData.code = -1;
+      try {
+        useSaveError(err);
+      } catch {}
     });
   return returnData;
 });

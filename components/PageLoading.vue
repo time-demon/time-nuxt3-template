@@ -1,5 +1,6 @@
+<!-- 加载页 -->
 <template>
-  <div class="pageLoading_container">
+  <div class="pageLoading_container" v-if="PageLoadingConfig.state">
     <div class="pageLoading">
       <div class="svgLoading">
         <div class="ball-scale-multiple">
@@ -12,8 +13,23 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const PageLoadingConfig = reactive<any>({
+  state: true,
+});
+onMounted(() => {
+  setTimeout(() => {
+    PageLoadingConfig.state = false;
+  }, 1500);
+});
+</script>
+
 <style lang="scss" scoped>
 .pageLoading_container {
+  background: #ffffff;
+  position: absolute;
+  z-index: 999999999;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -31,7 +47,7 @@
       font-size: 14px;
       letter-spacing: 1px;
       text-align: center;
-      color: var(--dark-color);
+      color: var(--theme-color);
     }
   }
 }
@@ -52,7 +68,7 @@
   }
 
   .ball-scale-multiple > div {
-    background-color: var(--dark-color);
+    background-color: var(--theme-color);
     border-radius: 100%;
   }
 
@@ -83,11 +99,9 @@
       transform: scale(0);
       opacity: 0;
     }
-
     5% {
       opacity: 1;
     }
-
     100% {
       -webkit-transform: scale(1);
       transform: scale(1);

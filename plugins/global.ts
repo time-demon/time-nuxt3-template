@@ -1,4 +1,5 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+// 页面加载进度条
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 NProgress.configure({
@@ -7,7 +8,7 @@ NProgress.configure({
   showSpinner: true, // 是否显示加载ico
   trickleSpeed: 200, // 自动递增间隔
   minimum: 0.3, // 更改启动时使用的最小百分比
-  parent: "html", //指定进度条的父容器
+  parent: "body", //指定进度条的父容器
 });
 
 export default defineNuxtPlugin((NuxtApp) => {

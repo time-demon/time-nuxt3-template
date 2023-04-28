@@ -4,13 +4,33 @@
     :style="[{ width: sidebarConfig.state ? '210px' : '0px' }]"
   >
     <div class="sidebarBox">
-      <header class="logoBox">{{ store.adminConfig.title }} · 后台</header>
+      <div class="logoBox">
+        <div>
+          {{ store.adminConfig.title }}
+          · 后台
+        </div>
+        <div class="author">
+          <nuxt-link to="http://timebk.cn/" target="_blank"
+            >Powered by 时光<span
+              style="
+                display: inline-block;
+                background: #606266;
+                letter-spacing: 1px;
+                scale: 0.9;
+                padding: 3px 6px;
+                border-radius: 5px;
+                margin: 0 2px;
+              "
+              >原创</span
+            ></nuxt-link
+          >
+        </div>
+      </div>
 
-      <nav class="sidebar">
+      <div class="sidebar">
         <el-menu
           style="
             --el-menu-text-color: var(--siderbar-color);
-            --el-menu-active-color: var(--siderbar-menu-active-color);
             --el-menu-item-height: var(--siderbar-menu-item-height);
           "
           :default-active="sidebarConfig.active"
@@ -92,12 +112,11 @@
             </template>
           </template>
         </el-menu>
-      </nav>
-
-      <footer class="copyright flexCenter">
+      </div>
+      <div class="copyright flexCenter">
         {{ new Date().getFullYear() }} &nbsp;&copy;
         {{ store.adminConfig.title ? store.adminConfig.title : 2 }}
-      </footer>
+      </div>
     </div>
   </div>
   <div
@@ -167,7 +186,7 @@
       <RoutingChip />
       <!-- 路由屑 -->
       <main class="mainBox">
-        <slot name="main" />
+        <slot />
       </main>
     </div>
   </div>
@@ -176,7 +195,8 @@
     target=".mainBox"
     :visibility-height="100"
     :right="30"
-    :bottom="30"
+    :bottom="40"
+    style="opacity: 0.8"
   >
     <i class="sg sg-qudingbu_to-top"></i>
   </el-backtop>
@@ -262,10 +282,19 @@ const goPath = async (data: any) => {
 const sidebarStateChange = () => {
   sidebarConfig.state = window.innerWidth < 768 ? false : true;
 };
+
+const windowWidth = ref<number>(0);
 onMounted(() => {
-  sidebarStateChange();
-  window.addEventListener("resize", () => {
-    sidebarStateChange();
+  windowWidth.value = window.innerWidth;
+  watch(
+    () => windowWidth,
+    (value, oldValue) => {
+      sidebarStateChange();
+    },
+    { immediate: true, deep: true }
+  );
+  window.addEventListener("resize", (e) => {
+    windowWidth.value = window.innerWidth;
   });
 });
 
@@ -298,16 +327,23 @@ const logOut = async () => {
     flex-direction: column;
     background: var(--siderbar-bg);
     > .logoBox {
+      box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
       position: relative;
       height: 50px;
       display: flex;
       vertical-align: top;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       font-size: 16px;
       font-weight: 300;
       background-color: var(--siderbar-head-bg);
       color: var(--siderbar-head-color);
+      > .author {
+        font-size: 12px;
+        scale: 0.8;
+        font-weight: 300;
+      }
     }
     > .logoBox::after {
       content: "";
@@ -322,6 +358,7 @@ const logOut = async () => {
       flex: auto;
       overflow: auto;
       :deep(.el-menu) {
+        border-right: none;
         display: flex;
         flex-direction: column;
       }

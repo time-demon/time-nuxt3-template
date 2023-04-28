@@ -1,37 +1,44 @@
 <!-- 路由屑 -->
 <template>
-  <ul class="navbarBox" type="none">
-    <li
-      class="navbar"
-      :class="[$route.name === home_routes.name ? 'this_navbar' : '']"
-      @click="goPath(home_routes)"
-    >
-      <span class="title">
-        {{ home_routes.meta.title }}
-      </span>
-    </li>
-    <template v-for="item in store_adminNavbar.adminNavbar" :key="item.name">
-      <li
-        v-if="store_adminNavbar.adminNavbar.length"
-        class="navbar"
-        :class="[$route.name === item.name ? 'this_navbar' : '']"
-        @click.stop="goPath(item)"
-      >
-        <span class="title">
-          <el-icon v-if="item.meta.keepAlive" :size="14" style="scale: 0.8">
-            <Ship />
-          </el-icon>
-          {{ item.meta.title }}
-        </span>
-        <span class="close" @click.stop="navbarClose(item)">
-          <i class="sg sg-guanbi_close"></i>
-        </span>
-      </li>
-    </template>
+  <div class="navbarBox" type="none">
+    <el-scrollbar>
+      <ul class="navbarUl">
+        <li
+          class="navbar"
+          :class="[$route.name === home_routes.name ? 'this_navbar' : '']"
+          @click="goPath(home_routes)"
+        >
+          <span class="title">
+            {{ home_routes.meta.title }}
+          </span>
+        </li>
+        <template
+          v-for="item in store_adminNavbar.adminNavbar"
+          :key="item.name"
+        >
+          <li
+            v-if="store_adminNavbar.adminNavbar.length"
+            class="navbar"
+            :class="[$route.name === item.name ? 'this_navbar' : '']"
+            @click.stop="goPath(item)"
+          >
+            <span class="title">
+              <el-icon v-if="item.meta.keepAlive" :size="14" style="scale: 0.8">
+                <Ship />
+              </el-icon>
+              {{ item.meta.title }}
+            </span>
+            <span class="close" @click.stop="navbarClose(item)">
+              <i class="sg sg-guanbi_close"></i>
+            </span>
+          </li>
+        </template>
+      </ul>
+    </el-scrollbar>
     <li class="navbarTools">
       <ul class="navbarToolsUl" type="none">
         <li class="navbarToolsLi">
-          <el-dropdown trigger="click" size="small">
+          <el-dropdown :trigger="isMobile() ? 'click' : 'hover'" size="small">
             <el-icon style="font-size: 12px">
               <ArrowDown />
             </el-icon>
@@ -49,10 +56,9 @@
         </li>
         <li class="navbarToolsLi">
           <el-popover
-            :popper-class="'adminRoutingChipNavbarToolsPopover'"
             placement="bottom"
             :width="'auto'"
-            trigger="click"
+            :trigger="isMobile() ? 'click' : 'hover'"
           >
             <template #reference>
               <el-icon style="font-size: 12px">
@@ -75,7 +81,7 @@
         </li>
       </ul>
     </li>
-  </ul>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -151,115 +157,141 @@ const navbarClose = (data: any, type: any) => {
   display: flex;
   vertical-align: top;
   align-items: center;
-  padding: 5px 5px;
-  > .navbar {
-    white-space: nowrap;
-    width: auto;
-    height: 100%;
-    position: relative;
+  padding: 0 0 !important;
+  :deep(.el-scrollbar) {
+    flex: auto;
+    .el-scrollbar__wrap {
+      padding: 5px 0;
+    }
+  }
+  .navbarUl {
+    padding: 0 5px;
     display: flex;
     vertical-align: top;
-    justify-content: center;
     align-items: center;
-    padding: 0 6px 0 10px;
-    margin-right: 10px;
-    border-radius: 2px;
-    cursor: pointer;
-    > .title {
-      z-index: 1;
+    height: 26px;
+    flex: auto;
+    > .navbar {
+      padding: 5px 5px;
+      white-space: nowrap;
+      width: auto;
+      height: 100%;
+      position: relative;
       display: flex;
       vertical-align: top;
-      align-items: center;
       justify-content: center;
-      i {
-        margin-right: 3px;
-      }
-    }
-    > .close {
-      z-index: 1;
-      margin: 0 0 0 2px;
-      height: 100%;
-      display: flex;
       align-items: center;
-      > i {
-        font-size: 12px;
-        display: inline-block;
-        scale: 0.6;
-        padding: 2px;
+      padding: 0 6px 0 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      cursor: pointer;
+      > .title {
+        z-index: 1;
+        display: flex;
+        vertical-align: top;
+        align-items: center;
+        justify-content: center;
+        i {
+          margin-right: 3px;
+        }
+      }
+      > .close {
+        z-index: 1;
+        margin: 0 0 0 2px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        > i {
+          font-size: 12px;
+          display: inline-block;
+          scale: 0.6;
+          padding: 2px;
+        }
+      }
+      > .close:hover {
+        > i {
+          background: var(--siderbar-head-bg);
+          border-radius: 50%;
+          color: #ffffff;
+        }
+      }
+      > .close:active {
+        > i {
+          background: var(--siderbar-head-bg);
+          border-radius: 50%;
+          color: #ffffff;
+        }
       }
     }
-    > .close:hover {
-      > i {
-        background: var(--siderbar-head-bg);
-        border-radius: 50%;
-        color: #ffffff;
-      }
+    > .navbar:nth-last-of-type(1) {
+      margin-right: 0;
     }
-    > .close:active {
-      > i {
-        background: var(--siderbar-head-bg);
-        border-radius: 50%;
-        color: #ffffff;
-      }
+    > .navbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: -webkit-fill-available;
+      height: -webkit-fill-available;
+      border: 1px solid #d8dce5;
+      border-radius: 2px;
     }
-  }
-  > .navbar:nth-last-of-type(1) {
-    margin-right: 0;
-  }
-  > .navbar::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-    border: 1px solid #d8dce5;
-    border-radius: 2px;
-  }
-  > .navbar:hover::after {
-    border: 1px solid var(--siderbar-head-bg);
-  }
-  > .this_navbar {
-    background: var(--siderbar-head-bg);
-    color: #ffffff;
-    > .title i {
+    > .navbar:hover::after {
+      border: 1px solid var(--siderbar-head-bg);
+    }
+
+    > .this_navbar {
+      background: var(--siderbar-head-bg);
       color: #ffffff;
-    }
-    > .close:hover {
-      > i {
-        background: #ffffff;
-        border-radius: 50%;
-        color: initial;
+      > .title i {
+        color: #ffffff;
+      }
+      > .close:hover {
+        > i {
+          background: #ffffff;
+          border-radius: 50%;
+          color: initial;
+        }
+      }
+      > .close:active {
+        > i {
+          background: #ffffff;
+          border-radius: 50%;
+          color: initial;
+        }
       }
     }
-    > .close:active {
-      > i {
-        background: #ffffff;
-        border-radius: 50%;
-        color: initial;
-      }
+  }
+  @media screen and (max-width: 768px) {
+    > .navbarUl::-webkit-scrollbar {
+      // display: none;
     }
+  }
+  @media screen and (min-width: 768px) {
+    // > .navbarUl::-webkit-scrollbar {
+    //   height: 2px;
+    // }
   }
   > .navbarTools {
+    border: 0.5px solid #eeeeee;
     z-index: 1;
     cursor: pointer;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    // position: absolute;
+    // right: 0;
+    // top: 50%;
+    // transform: translateY(-50%);
     height: 100%;
     width: auto;
-    padding: 0 5px;
     > .navbarToolsUl {
       height: 100%;
       display: flex;
       vertical-align: top;
       > .navbarToolsLi {
-        width: 25px;
+        width: 30px;
         display: flex;
         vertical-align: top;
         align-items: center;
@@ -274,8 +306,6 @@ const navbarClose = (data: any, type: any) => {
         .el-icon {
           width: 100%;
           height: 100%;
-          svg {
-          }
         }
       }
       > .navbarToolsLi:active {

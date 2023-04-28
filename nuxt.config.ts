@@ -3,9 +3,8 @@ export default defineNuxtConfig({
   nitro: {
     // 代理配置
     devProxy: {
-      "/proxy/sohu": {
-        target: "https://pv.sohu.com/",
-        prependPath: true,
+      "/proxy/weixin": {
+        target: "https://mp.weixin.qq.com/",
         changeOrigin: true,
       },
     },
@@ -24,14 +23,14 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "stylesheet",
-          href: "//at.alicdn.com/t/c/font_3778480_5z78tg3p77f.css",
+          href: "//at.alicdn.com/t/c/font_3778480_lmrwrcwwa9.css",
         },
       ],
       noscript: [{ children: "JavaScript is required" }],
     },
   },
-  plugins: ["@/plugins/directives"],
   css: ["@/assets/main.scss"],
+  plugins: ["@/plugins/directives"],
   modules: [
     "@element-plus/nuxt",
     "@pinia/nuxt",
@@ -39,5 +38,31 @@ export default defineNuxtConfig({
   ],
   elementPlus: {
     icon: "ElIcon",
+  },
+  vite: {
+    // 打包后清除console和debugger，注意：server下文件的不会删除
+    esbuild: {
+      drop: ["console", "debugger"],
+    },
+  },
+  postcss: {
+    plugins: {
+      "postcss-preset-env": {
+        stage: 1,
+        // 自动补全CSS前缀
+        autoprefixer: {
+          overrideBrowserslist: [
+            "> 0%", // 表示支持市面上多少比例的浏览器
+            // "Android > 4.1",
+            // "iOS > 7.1",
+            // "Chrome > 31",
+            // "ff > 31",
+            // "ie >= 10",
+            //'last 2 versions', // 所有主流浏览器最近2个版本
+          ],
+          grid: true,
+        },
+      },
+    },
   },
 });

@@ -1,4 +1,4 @@
-// 元素权限控制
+// 元素权限控制指令 v-roleVerify
 import { adminInfor } from "~/stores/adminInfor";
 
 export default {

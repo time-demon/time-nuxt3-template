@@ -8,6 +8,11 @@
   }
   .el-dialog {
     max-width: 100vw;
+    .el-descriptions__table {
+      .el-descriptions__cell {
+        position: relative;
+      }
+    }
   }
   @media screen and (max-width: 768px) {
     .el-dialog {
@@ -17,13 +22,8 @@
   .el-divider--horizontal {
     margin: 10px 0;
   }
-  .el-menu-item:hover {
-    background: var(--siderbar-menu-hover-bg);
-    color: var(--siderbar-menu-hover-color);
-  }
 
   .el-menu-item.is-active {
     background: var(--siderbar-menu-active-bg);
-    color: var(--siderbar-menu-active-color);
   }
 }

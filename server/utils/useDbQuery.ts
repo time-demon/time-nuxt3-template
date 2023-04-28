@@ -2,16 +2,22 @@
 // 默认获取符合条件的全部数据，
 // 开启分页获取功能：query.paging 为true
 // 开启模糊搜索功能：query.fuzzy 为true
-import { MongoClient } from "mongodb";
-import url from "~/server/mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
-function db_query(config = {} as any) {
-  const mongodb = MongoClient.connect(url);
+function useDbQuery(config = {} as any) {
   return new Promise((resolve, reject) => {
+    if (config.query) {
+      if (config.query._id) {
+        config.query._id = new ObjectId(config.query._id);
+      }
+    } else {
+      reject();
+      return;
+    }
+    const mongodb = MongoClient.connect(useMongodb());
     mongodb
       .then((conn: any) => {
         let dbTable = null as any;
-
         const pageConfig = {
           total: 0, // 总条数
           pages: 0, // 总页数
@@ -79,6 +85,9 @@ function db_query(config = {} as any) {
             .catch((err: any) => {
               // 数据操作失败
               reject(err);
+              try {
+                useSaveError(err);
+              } catch {}
             })
             .finally(() => {
               // 取消
@@ -88,17 +97,30 @@ function db_query(config = {} as any) {
         } else {
           // 不分页，获取符合条件的全部数据
 
-          dbTable = conn
-            .db()
-            .collection(config.table)
-            .find(config.query)
-            .toArray();
-          query({ conn, dbTable, resolve, reject });
+          if (config.type === "count") {
+            dbTable = conn
+              .db()
+              .collection(config.table)
+              .find(config.query)
+              .count();
+          } else {
+            dbTable = conn
+              .db()
+              .collection(config.table)
+              .find(config.query)
+              .toArray();
+          }
+
+          query({ conn, dbTable, resolve, reject, config });
         }
       })
       .catch((err: any) => {
         // 数据库连接失败
+        console.log("数据库连接失败", err);
         reject(err);
+        try {
+          useSaveError(err);
+        } catch {}
       });
   });
 }
@@ -109,18 +131,26 @@ function query({
   resolve = {} as any,
   reject = {} as any,
   pageConfig = {} as any,
+  config = {} as any,
 }) {
   dbTable
     .then((res: any) => {
-      resolve(Object.assign({ data: res }, pageConfig));
+      if (config.type === "count") {
+        resolve(res);
+      } else {
+        resolve(Object.assign({ data: res }, pageConfig));
+      }
     })
     .catch((err: any) => {
       // 数据操作失败
       reject(err);
+      try {
+        useSaveError(err);
+      } catch {}
     })
     .finally(() => {
       // 取消
       conn.close();
     });
 }
-export default db_query;
+export default useDbQuery;

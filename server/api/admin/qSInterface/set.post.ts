@@ -1,6 +1,5 @@
 // 数据修改
 import { MongoClient, ObjectId } from "mongodb";
-import url from "~/server/mongodb";
 
 export default defineEventHandler(async (event: any) => {
   const body = await readBody(event);
@@ -15,6 +14,9 @@ export default defineEventHandler(async (event: any) => {
     })
     .catch((err: any) => {
       returnData = err;
+      try {
+        useSaveError(err);
+      } catch {}
     });
 
   return returnData;
@@ -23,11 +25,11 @@ export default defineEventHandler(async (event: any) => {
 // 设置数据
 async function setData({ body }: any) {
   return new Promise((resolve, reject) => {
-    const mongodb = MongoClient.connect(url);
+    const mongodb = MongoClient.connect(useMongodb());
     mongodb
       .then(async (conn: any) => {
         const dbTable = conn.db().collection("apis");
-        let _id = new ObjectId(body._id);
+        const _id = new ObjectId(body._id);
         delete body._id;
         dbTable
           .updateMany({ _id: _id }, { $set: body })
@@ -47,6 +49,9 @@ async function setData({ body }: any) {
               code: -1,
               msg: "失败",
             });
+            try {
+              useSaveError(err);
+            } catch {}
           })
           .finally(() => {
             conn.close();
@@ -58,6 +63,9 @@ async function setData({ body }: any) {
           code: -1,
           msg: "失败",
         });
+        try {
+          useSaveError(err);
+        } catch {}
       });
   });
 }
