@@ -12,4 +12,4 @@ dist
 !/pages/admin/home.vue
 !/pages/admin/login.vue
 !/pages/admin/icon.vue
-server/api
+server/api/
