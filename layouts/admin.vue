@@ -190,7 +190,9 @@
         </ul>
       </div>
       <!-- 路由屑 -->
-      <RoutingChip v-if="adminConfig().sideDrawerConfig.routingTab.state" />
+      <AdminRoutingChip
+        v-if="adminConfig().sideDrawerConfig.routingTab.state"
+      />
       <main class="mainBox">
         <slot />
       </main>
