@@ -1,9 +1,7 @@
 ﻿![](/show1.png)
 
 # time-nuxt3-template
-234版本：1.2.0
-68396
-2版本：1.2.0
+版本：1.2.0
 
 作者：时光 博客：https://timebk.cn/
 
