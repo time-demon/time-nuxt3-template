@@ -1,7 +1,7 @@
 // OS获取
 import os from "os";
 export default defineEventHandler(async (event: any) => {
-
+  let returnData = {} as any;
   const OS = {
     node: `${process.release.name} ${process.version}`, // node
     type: os.type(), // 操作系统名称
@@ -14,7 +14,6 @@ export default defineEventHandler(async (event: any) => {
     arch: os.arch(), //  CPU 体系结构
     machine: os.machine(), // 计算机类型
   };
-  let returnData = {} as any;
   returnData.data = OS;
   returnData.code = 200;
   return returnData;

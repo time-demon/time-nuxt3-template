@@ -19,8 +19,22 @@
       width: 95vw;
     }
   }
+
+  // 分割线
+  .el-divider {
+    .el-divider__text {
+      width: max-content;
+    }
+  }
   .el-divider--horizontal {
     margin: 10px 0;
+  }
+
+  // 抽屉
+  .el-drawer {
+    .el-drawer__header {
+      margin-bottom: 0;
+    }
   }
 
   .el-menu-item.is-active {

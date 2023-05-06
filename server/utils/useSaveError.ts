@@ -9,7 +9,7 @@ export default (errorData: any) => {
     errorData = JSON.stringify(errorData);
   }
   useDbAdd({
-    data: [{ type: "admin", errorData, time: new Date().getTime() }],
+    data: [{ type: "admin", error: errorData, time: new Date().getTime() }],
     table: tableName,
   });
 };

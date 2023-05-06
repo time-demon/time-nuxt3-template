@@ -1,12 +1,10 @@
 <!-- 加载页 -->
 <template>
-  <div class="pageLoading_container" v-if="PageLoadingConfig.state">
-    <div class="pageLoading">
+  <div class="pageLoading_container flexCenter" v-if="PageLoadingConfig.state">
+    <div class="pageLoading flexCenter">
       <div class="svgLoading">
         <div class="ball-scale-multiple">
-          <div></div>
-          <div></div>
-          <div></div>
+          <div v-for="item in 3"></div>
         </div>
       </div>
       <div class="loadingText">加载中，请稍等</div>
@@ -33,16 +31,8 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  vertical-align: top;
-  align-items: center;
-  justify-content: center;
   > .pageLoading {
-    display: flex;
-    vertical-align: top;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     > .loadingText {
       font-size: 14px;
       letter-spacing: 1px;

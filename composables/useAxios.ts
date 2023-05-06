@@ -58,6 +58,7 @@ const axiosGo = (config = {} as any) => {
       })
       .catch((err: any) => {
         reject(err);
+
         try {
           useSaveError(err);
         } catch {}

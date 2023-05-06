@@ -11,7 +11,7 @@ function useDbQuery(config = {} as any) {
         config.query._id = new ObjectId(config.query._id);
       }
     } else {
-      reject();
+      reject("useDbQuery config.query异常");
       return;
     }
     const mongodb = MongoClient.connect(useMongodb());

@@ -86,6 +86,8 @@
 
 <script setup lang="ts">
 import { adminNavbar } from "~/stores/adminNavbar";
+import { adminConfig } from "~/stores/adminConfig";
+
 const store_adminNavbar = reactive<any>(adminNavbar());
 const routes = reactive<any>(
   useRouter().options.routes.find((item: any) => item.name === "admin")
@@ -273,7 +275,7 @@ const navbarClose = (data: any, type: any) => {
     // }
   }
   > .navbarTools {
-    border: 0.5px solid #eeeeee;
+    border-left: 0.5px solid #eeeeee;
     z-index: 1;
     cursor: pointer;
     background: #ffffff;
@@ -327,6 +329,7 @@ const navbarClose = (data: any, type: any) => {
 .navbarBox::after {
   content: "";
   position: absolute;
+  z-index: 1;
   bottom: 0;
   left: 0;
   width: 100%;

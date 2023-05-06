@@ -76,39 +76,45 @@ useAxios({
   url: "/proxy/weixin/intp/getuserclientip",
 });
 
-const isClient = ref<boolean>(false); 
+const isClient = ref<boolean>(false);
 onMounted(() => {
   isClient.value = process.client;
 });
 
 // 主要数据
 const mainData = ref<any>([]);
-useAxios({
-  url: "/api/admin/totalDataVolume/get",
-})
-  .then((r: any) => {
-    if (r.code === 200) {
-      mainData.value = [
-        {
-          title: "总用户",
-          count: r.data.user,
-          tips: "注册用户总数",
-        },
-        {
-          title: "搜题总次数",
-          count: r.data.recordTitle,
-          tips: "搜题总次数",
-        },
-        {
-          title: "API总数",
-          count: r.data.apis,
-          tips: "API总数",
-        },
-      ];
-    }
-    console.log("mainData", mainData.value);
+// 获取统计数据
+const getData = () => {
+  useAxios({
+    url: "/api/admin/totalDataVolume/get",
   })
-  .catch((err: any) => {});
+    .then((r: any) => {
+      if (r.code === 200) {
+        mainData.value = [
+          {
+            title: "总用户",
+            count: r.data.user,
+            tips: "注册用户总数",
+          },
+          {
+            title: "搜题总次数",
+            count: r.data.recordTitle,
+            tips: "搜题总次数",
+          },
+          {
+            title: "API总数",
+            count: r.data.apis,
+            tips: "API总数",
+          },
+        ];
+      }
+    })
+    .catch((err: any) => {});
+};
+onMounted(() => {
+  getData();
+});
+
 // 系统内存图表
 const sysEchartRef = ref<HTMLElement>();
 // 系统数据
@@ -179,25 +185,24 @@ const sysData_get = (sysEchart: any) => {
           });
           resolve();
         }
-        reject();
+        reject(r);
       })
       .catch((err: any) => {
-        reject();
+        reject(err);
       });
   });
 };
 // 频繁更新
-let sysEchartRef_render = async (sysEchart: any) => {
+let sysEchartRef_render: any = async (sysEchart: any) => {
   try {
     await sysData_get(sysEchart);
     setTimeout(() => {
       sysEchartRef_render(sysEchart);
     }, 3000);
-  } catch {}
+  } catch (err) {}
 };
-console.log("asdassdasdsad");
 
-onMounted(async () => {
+onMounted(() => {
   const sysEchart = useEcharts().init(sysEchartRef.value!);
   sysEchart.on("finished", () => {
     sysEchart.resize();
@@ -207,6 +212,7 @@ onMounted(async () => {
   });
   sysEchartRef_render(sysEchart);
 });
+// 卸载前
 onBeforeUnmount(() => {
   sysEchartRef_render = null;
 });

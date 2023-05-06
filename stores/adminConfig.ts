@@ -5,8 +5,26 @@ import { ElMessage } from "element-plus";
 export const adminConfig = defineStore("adminConfig", {
   state: () => {
     return {
-      adminConfig: {}, // 后台配置
-      pageState: true, // main盒状态
+      // 后台配置
+      adminConfig: {},
+      // main盒状态
+      pageState: true,
+      // 设置抽屉配置
+      sideDrawerConfig: {
+        state: false,
+        theme: {
+          isType: "light",
+          list: [
+            {
+              type: "light",
+              main: "#B09573",
+              secondary: "#49443D",
+            },
+          ],
+        },
+        // 路由标签
+        routingTab: { state: true },
+      },
     };
   },
   actions: {
@@ -33,5 +51,9 @@ export const adminConfig = defineStore("adminConfig", {
         });
       }
     },
+  },
+  // 持久化
+  persist: {
+    storage: persistedState.localStorage,
   },
 });

@@ -10,8 +10,9 @@
           · 后台
         </div>
         <div class="author">
-          <nuxt-link to="http://timebk.cn/" target="_blank"
-            >Powered by 时光<span
+          <nuxt-link to="http://timebk.cn/" target="_blank">
+            Powered by 时光
+            <span
               style="
                 display: inline-block;
                 background: #606266;
@@ -21,9 +22,10 @@
                 border-radius: 5px;
                 margin: 0 2px;
               "
-              >原创</span
-            ></nuxt-link
-          >
+            >
+              原创
+            </span>
+          </nuxt-link>
         </div>
       </div>
 
@@ -121,7 +123,7 @@
   </div>
   <div
     class="rightContainer"
-    :style="[{ marginLeft: sidebarConfig.state ? '210px' : '0px' }]"
+    :style="[{ width: `calc(100% - ${sidebarConfig.state ? '210' : '0'}px)` }]"
   >
     <div class="rightBox">
       <div class="headeTopBox">
@@ -157,6 +159,11 @@
               <i class="sg sg-socialgithuboutline"></i>
             </NuxtLink>
           </li>
+          <li title="设置" @click="adminConfig().sideDrawerConfig.state = true">
+            <el-icon>
+              <Setting />
+            </el-icon>
+          </li>
           <li class="adminInfor">
             <el-dropdown trigger="click">
               <span class="el-dropdown-link">
@@ -183,8 +190,7 @@
         </ul>
       </div>
       <!-- 路由屑 -->
-      <RoutingChip />
-      <!-- 路由屑 -->
+      <RoutingChip v-if="adminConfig().sideDrawerConfig.routingTab.state" />
       <main class="mainBox">
         <slot />
       </main>
@@ -209,6 +215,8 @@ import { adminConfig } from "~/stores/adminConfig";
 const store = reactive<any>(adminConfig());
 const store_adminInfor = reactive<any>(adminInfor());
 const router = useRouter() as any;
+
+adminConfig().sideDrawerConfig.state = false;
 
 // 侧边导航
 const sidebarConfig = reactive<any>({
@@ -280,18 +288,18 @@ const goPath = async (data: any) => {
 
 // 侧边是否展开
 const sidebarStateChange = () => {
-  sidebarConfig.state = window.innerWidth < 768 ? false : true;
+  sidebarConfig.state = windowWidth.value < 768 ? false : true;
 };
 
 const windowWidth = ref<number>(0);
 onMounted(() => {
   windowWidth.value = window.innerWidth;
   watch(
-    () => windowWidth,
+    () => windowWidth.value,
     (value, oldValue) => {
       sidebarStateChange();
     },
-    { immediate: true, deep: true }
+    { immediate: true }
   );
   window.addEventListener("resize", (e) => {
     windowWidth.value = window.innerWidth;
@@ -316,9 +324,8 @@ const logOut = async () => {
   overflow-x: hidden;
   overflow-y: auto;
   position: fixed;
-  z-index: 1;
+  z-index: 999999;
   background: #ffffff;
-  transition: all 0.3s linear;
   > .sidebarBox {
     width: 210px;
     height: 100%;
@@ -391,7 +398,7 @@ const logOut = async () => {
   border-right: 1px solid #eeeeee;
 }
 .rightContainer {
-  transition: all 0.3s linear;
+  float: right;
   height: 100vh;
   background: transparent;
   position: relative;

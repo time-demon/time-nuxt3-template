@@ -13,7 +13,7 @@ const useDbAdd = (config = {} as any) => {
             if (r.acknowledged) {
               resolve(r);
             } else {
-              reject();
+              reject(r);
             }
           })
           .catch((err: any) => {

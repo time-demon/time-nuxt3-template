@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "stylesheet",
-          href: "//at.alicdn.com/t/c/font_3778480_lmrwrcwwa9.css",
+          href: "//at.alicdn.com/t/c/font_3778480_dpcrzrftslp.css",
         },
       ],
       noscript: [{ children: "JavaScript is required" }],
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
   vite: {
     // 打包后清除console和debugger，注意：server下文件的不会删除
     esbuild: {
-      drop: ["console", "debugger"],
+      // drop: ["console", "debugger"],
     },
   },
   postcss: {

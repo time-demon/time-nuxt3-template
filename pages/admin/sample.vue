@@ -272,16 +272,8 @@ const getData = async (query = {} as any) => {
   })
     .then((r: any) => {
       if (r.code === 200) {
-        let zIndex = 0;
-        let timer = setInterval(() => {
-          if (zIndex === r.data.length) {
-            clearInterval(timer);
-            tableData.loading = false;
-            return;
-          }
-          tableData.list.push(r.data[zIndex]);
-          zIndex++;
-        }, 10);
+        tableData.list = r.data;
+        tableData.loading = false;
         tableData.paging.total = r.total;
         tableData.paging.pages = r.pages;
         tableData.paging.page = r.page;

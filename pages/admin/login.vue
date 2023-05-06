@@ -143,14 +143,14 @@ const loginIn = async (formEl: FormInstance | undefined) => {
       }
 
       // 开始开发时请删除这个！
-      if (true) {
-        setTimeout(() => {
-          // 登录并存储管理员信息
-          adminInfor().loginIn({ name: "时光" });
-          loginButton.loading = false;
-        }, 300);
-        return;
-      }
+      // if (true) {
+      //   setTimeout(() => {
+      //     // 登录并存储管理员信息
+      //     adminInfor().loginIn({ name: "时光" });
+      //     loginButton.loading = false;
+      //   }, 300);
+      //   return;
+      // }
 
       // 开始登录 接口自定义，文件在 server/api/admin/login.ts
       useAxios({

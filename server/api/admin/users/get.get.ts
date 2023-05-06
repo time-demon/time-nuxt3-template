@@ -1,11 +1,5 @@
 // 用户数据获取
 export default defineEventHandler(async (event: any) => {
-  if (!useToken({ token: getHeaders(event).authorization })) {
-    return {
-      code: 401,
-      msg: "token已过期",
-    };
-  }
 
   const query = getQuery(event);
   let returnData = {} as any;
