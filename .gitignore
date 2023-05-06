@@ -14,5 +14,5 @@ dist
 !/pages/admin/icon.vue
 server/api/admin
 !server/api/admin/login.ts
-server/api/pay
-server/api/app
+server/api/pay/
+server/api/app/
