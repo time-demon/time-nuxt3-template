@@ -1,13 +1,13 @@
 // 支付宝 Node SDK 配置
 import AlipaySdk from "alipay-sdk";
 const alipaySdk = new AlipaySdk.default({
-  appId: "2021003192684384", // APPID
-  signType: "RSA2", // 签名类型，一般是RSA2
-  gateway: "https://openapi.alipay.com/gateway.do", // 网关地址
+  appId: "", // APPID
+  signType: "", // 签名类型，一般是RSA2
+  gateway: "", // 网关地址
   alipayPublicKey:
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3S0ZTUj1VGpsfWCHJpQtpi2DZmxUYVstSYyH8Ny28D18GIv2MZA3C52/+WlLRyBgzbFMKWSFcXQbDvCLnIMzn1FD/RlQkc6qv1RmQvdziYcCwS80zqKG8DAHSPQ7+XSpx2FVIOFNcReQIw4QpYN8eYy3gH3pd7zzCBxMGbwFIKswq8fWOWUTRMSqVMJI2o/smdFxFulxDO+wMmkxoVoCCXRkfpz2o1rap7FsuQvbQGtvD/E5fVRgpdHfAnzV4WsI1CWfMLxzLIdZtDitKrcovoAafnNhCeVSB5J3kUC7TVD7h0GXZL4xLGHza0AvL8/MJLtDQR0M1YaeWZ6CNNARtQIDAQAB", // 支付宝公钥
+    "", // 支付宝公钥
   privateKey:
-    "MIIEogIBAAKCAQEAmiya8lqfOZJSbD8ffeYpheLlwy8MF8qmXSfItp+5yj+V4+XyYDE5OCsWsRYNOxuqLZd1yGmEVp45swecEj4+2SPr6pkOyLQJcEeVST2RoT71XurCr0ZMBCWt2xvrowhhcjEiqYGtWlPTE8vmOI2j9ZNtKQRmIDIWz3F6D+eEa9zBqPsIGeXRM5Olum6yEkaUhHTMKetpJpkqngT6aQ/R4D2A2vfJz31m+R5zLTMGX2EGtOR0SpbhHX+dYR/7AnEzqd2AAd7LBOvbSdB033jeJQCxXwLmoVXqSLMa/Lb4+7OZuwx4US9Nbn5eslDUx9YpCzyHn8UNjYCBU8ZPw0ALAwIDAQABAoIBAEGfUMhtSC6iGFEYwRe+etgRDsj4YoZR7GPkRittaxAp5mvdeT/2U6uTs5Hml/UbvmCvgiOuvfR8XoTUbVragbe88XKmeUN2VjojTeihuzXN7XTcKcee/UYan5iOlsqLC6cmQOGzX4z99u8LL8/MgghKGwGFbM6xY0Iiw9i3K4cY/ym9OSZZwsdTw8tPTJtYkZc7X3yNIZ7nu20heUOZhO1BSRCJk61jmItUxHSM1NdlKHptDKlgnelUr1gE+zTGi2scNTZX7q57MIQIijNrU6zUM4A0pysIzCjGWObFDc3V22AMdJQDIP/HH/dFnYLifYCQX8X9YicIOt1uXA/WwyECgYEA+OGm09XztqIzaxwXyJea3kFa2UW6nXOK1FcLFjYjvtSNXYnJ0vndWXEoPxLS7TUOuZCpfc4ohanz242g42veIP1V3HcM4V4nPAqZPEFPIyion5HQblh9XeABwDi/Q5xqiIvzwXprZGPHv80xrDZ7nWz6MP2fxRaERWzjEzT3jLMCgYEAnpV+J4y0NgjeQAqmGCPCp91j1myWM/ZLbVTx4pxOiFL3SVJik1W1uu1ZcHfck0H2Tzzd0A6RQXiR0S601QluK1rT+PDeskf6KYvfeaFHR8XXYf98uEDFLGjRDkpLtkNvfYzQ/0xiRfG49pbhUJgue1P6u/cplf2VtzOgPOlxUHECgYA0sfJUn9Q+MxGX+BbBDfhoXoYRwsXEWJZoZxWd2lCvMunLiEUHOog3S9ItqJqoRrebapm4XVIPGvDa553NCSW67mijiUFc5kaAW+4d5+YNl6o8Pu9Wrb29hpRYUquMcS3NQ3SU3oqmcsn0PknqII8DwfMnNEwDusS+vlNF2c0gKQKBgDbLpuSZjKdjFxB/3XZX3OnN6LJtoNThlJx5jn7jzYrzR/jw25jXM80cOBxRfkjvsOEeQfKjJfO+anwiLF+0O3oFj1rkN77YegsjBpvra0rUhKCa/AhacQbwTNQoPdMDqCF0p76fMRHD/UpPRhloDB+XG/sY4yitj67WytZhP0MxAoGATJWZOhGN49oVavLYznHxhUqla9HHHnPlIxQYfvV1bniw1j+ZuJjm61vcx3vP+dEWbGRouEbGuj6e7ROW69KvAKs4XawOSAFkxqt2VYSGts0X4D2ZlqEJ0We6IUdQC0Q9TI2jhFy/oaTXaqyulhJd6AsVcNO2yy7I8mcYUE8VRpI=", // 应用私钥
+    "", // 应用私钥
   // 编码字符集
   charset: "utf-8",
   // 版本默认 1.0
