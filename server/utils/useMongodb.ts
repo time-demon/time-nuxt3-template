@@ -5,11 +5,11 @@ const db_config = {
   // 端口，一般27017默认即可
   port: "27017",
   // 数据库名称
-  dbname: "applet_searchQuestions",
+  dbname: "",
   // 用户名
-  name: "applet_searchQuestions",
+  name: "",
   // 密码
-  password: "j3EPeMA857kC019K",
+  password: "",
 };
 // 本地数据库 本地开发时用
 const lc_config = {
